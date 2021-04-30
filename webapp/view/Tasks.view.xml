@@ -3,35 +3,21 @@
   xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core">
-  <Table id="idProductsTable" inset="false" items="{
-    path: 'Pomodoro>/history',
-    sorter: {
-      path: 'Name'
-    }
-  }">
+  <Table inset="false" items="{Pomodoro>/history}">
     <headerToolbar>
       <OverflowToolbar>
         <content>
-          <Title text="Products" level="H2"/>
+          <Title text="Tasklist" level="H2"/>
           <ToolbarSpacer />
-          <ComboBox id="idPopinLayout" placeholder="Popin layout options" change="onPopinLayoutChanged">
-            <items>
-              <core:Item text="Block" key="Block"/>
-              <core:Item text="Grid Large" key="GridLarge"/>
-              <core:Item text="Grid Small" key="GridSmall"/>
-            </items>
-          </ComboBox>
-          <Label text="Sticky options:" />
-          <CheckBox text="ColumnHeaders" select="onSelect"/>
-          <CheckBox text="HeaderToolbar" select="onSelect"/>
-          <CheckBox text="InfoToolbar" select="onSelect"/>
-          <ToggleButton id="toggleInfoToolbar" text="Hide/Show InfoToolbar" press="onToggleInfoToolbar" />
+          <!--  -->
+          <Button text="Synchronize" press="handleSynchronizeHistory" />
+          <Button text="Delete history" press="handleDeleteHistory" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
     <infoToolbar>
       <OverflowToolbar>
-        <Label text="Wide range of available products"/>
+        <Label text="Your past pomodoros are logged here. You can permanently remove older tasks in your settings"/>
       </OverflowToolbar>
     </infoToolbar>
     <columns>

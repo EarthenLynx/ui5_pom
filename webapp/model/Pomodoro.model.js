@@ -53,30 +53,33 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     // Status
     setStatusWorking() {
-      const { msTotal } = this.getProperty("/settings/pomodoro")
+      const { msTotal, name } = this.getProperty("/settings/pomodoro")
       this.setProperty('/status', {
         isWorking: true,
         isPausingShort: false,
         isPausingLong: false,
       })
+      this.setProperty('/statusName', name)
       this.setTimer(msTotal);
     },
     setStatusPausingShort() {
-      const { msTotal } = this.getProperty("/settings/shortBreak")
+      const { msTotal, name } = this.getProperty("/settings/shortBreak")
       this.setProperty('/status', {
         isWorking: false,
         isPausingShort: true,
         isPausingLong: false,
       })
+      this.setProperty('/statusName', name)
       this.setTimer(msTotal)
     },
     setStatusPausingLong() {
-      const { msTotal } = this.getProperty("/settings/longBreak")
+      const { msTotal, name } = this.getProperty("/settings/longBreak")
       this.setProperty('/status', {
         isWorking: false,
         isPausingShort: true,
         isPausingLong: false,
       })
+      this.setProperty('/statusName', name)
       this.setTimer(msTotal)
     },
 
@@ -101,9 +104,11 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
 
     tick(handler) {
+      const { statusName } = this.getData()
       let { msLeft, msExpired } = this.getProperty('/timer');
       msLeft -= 1000;
       msExpired += 1000;
+      document.title = `${statusName} - ${(msLeft / 60000).toFixed(1)} Minutes left`
       if (msLeft === 0) {
         handler.handleFinishCurrentPhase()
         this.stopTicking();
@@ -151,6 +156,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msExpired: 0,
       ticking: false,
     },
+    statusName: 'Working',
     status: {
       isWorking: true,
       isPausingShort: false,
@@ -158,12 +164,15 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
     settings: {
       pomodoro: {
+        name: 'Working',
         msTotal: 1500000,
       },
       shortBreak: {
+        name: 'Short Break',
         msTotal: 300000,
       },
       longBreak: {
+        name: 'Long break',
         msTotal: 900000,
       },
       minFocus: {

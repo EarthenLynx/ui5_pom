@@ -30,6 +30,7 @@ sap.ui.define([
 		handleFinishCurrentPhase() {
 			const { status } = Pomodoro.getData();
 			const { msTotal } = Pomodoro.getProperty('/settings/minFocus')
+			const { show: showNotification } = Pomodoro.getProperty("/settings/notification")
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msTotal)) {
 				Toast.show(`Focus for at least ${(msTotal / 60000).toFixed(0)} minutes!`);
@@ -42,8 +43,10 @@ sap.ui.define([
 					task.status = status;
 					task.msExpired = msExpired;
 					Pomodoro.addToHistory({ ...task })
-					this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
 					Toast.show("Phase completed")
+					if (showNotification) {
+						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
+					}
 				} else {
 					Toast.show("Phase skipped")
 				}
@@ -76,6 +79,14 @@ sap.ui.define([
 
 		handleCloseTaskPopover() {
 			this._taskPopover.then(popover => popover.close());
+		},
+
+		handleSynchronizeHistory() {
+			Pomodoro.syncHistory()
+		},
+
+		handleDeleteHistory() {
+			Pomodoro.clearHistory();
 		},
 
 		handleSetUserTheme() {

@@ -30,7 +30,8 @@ sap.ui.define(
           const notification = new Notification(title, body);
           notification.onclick = (event) => {
             event.preventDefault(); // prevent the browser from focusing the Notification's tab
-            window.open(location.href);
+            window.focus()
+            notification.close()
           }
         }
       },

@@ -3,7 +3,7 @@
 	xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page" title="Pomodoro Tracker">
 		<content>
-			<IconTabBar stretchContentHeight="true" backgroundDesign="Transparent" id="idIconTabBarMulti" class="sapUiResponsiveContentPadding">
+			<IconTabBar stretchContentHeight="true" backgroundDesign="Transparent">
 				<items>
 					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Pomodoro">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
@@ -21,7 +21,6 @@
 			<OverflowToolbar id="otbFooter">
 				<ToolbarSpacer/>
 				<Button text="Task" icon="sap-icon://target-group" press="handleOpenTaskPopover" />
-				<ToolbarSpacer/>
 			</OverflowToolbar>
 		</footer>
 	</Page>

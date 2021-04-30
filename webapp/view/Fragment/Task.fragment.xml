@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<ResponsivePopover title="Focus on the next task at hand" class="sapUiContentPadding" placement="Top">
+	<ResponsivePopover title="Focus on the next task at hand" modal="true" class="sapUiContentPadding" placement="Left">
 		<endButton>
 			<Button text="Close" press="handleCloseTaskPopover" />
 		</endButton>
