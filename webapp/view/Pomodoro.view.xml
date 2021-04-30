@@ -1,0 +1,24 @@
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+  xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core">
+  <l:BlockLayout background="Dashboard" class="ui-center-container">
+    <l:BlockLayoutRow accentCells="Accent1">
+      <l:BlockLayoutCell>
+        <VBox alignItems="Center">
+          <Text text="Current focus: {Pomodoro>/task/title}"></Text>
+          <Text class="ui-title" text="{ path: 'Pomodoro>/timer/msLeft', formatter: '.formatter.formatMsToMinutes'}" />
+        </VBox>
+        <ProgressIndicator state="{= (${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100) >= 80 ? 'Success' : 'Information'}"  width="20rem" class="sapUiSmallMarginBottom" percentValue="{= ${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100 }"/>
+        <VBox alignItems="Center">
+          <HBox>
+            <Button class="sapUiTinyMargin" tooltip="Toggle timer" icon="{=${Pomodoro>/timer/ticking} ? 'sap-icon://pause' : 'sap-icon://future'}" press="handleToggleTimer" />
+            <Button type="{= ${Pomodoro>/timer/msExpired} > ${Pomodoro>/timer/minFocus} ? 'Success' : 'Default'}" class="sapUiTinyMargin" tooltip="Finish active phase" icon="sap-icon://accept" press="handleFinishCurrentPhase" />
+            <Button class="sapUiTinyMargin" tooltip="Reset this phase" icon="sap-icon://stop" press="handleResetCurrentPhase" />
+          </HBox>
+        </VBox>
+      </l:BlockLayoutCell>
+    </l:BlockLayoutRow>
+  </l:BlockLayout>
+</mvc:View>

@@ -1,0 +1,25 @@
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Page id="page" title="Pomodoro Tracker">
+		<content>
+			<IconTabBar stretchContentHeight="true" backgroundDesign="Transparent" id="idIconTabBarMulti" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Pomodoro">
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
+					</IconTabFilter>
+					<IconTabFilter design="Vertical" icon="sap-icon://action-settings" text="Settings">
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="true" />
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</content>
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<ToolbarSpacer/>
+				<Button text="Task" icon="sap-icon://target-group" press="handleOpenTaskPopover" />
+				<ToolbarSpacer/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

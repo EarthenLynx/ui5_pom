@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ResponsivePopover title="Focus on the next task at hand" class="sapUiContentPadding" placement="Top">
+		<endButton>
+			<Button text="Close" press="handleCloseTaskPopover" />
+		</endButton>
+		<content>
+			<Label text="What are you focusing on?"></Label>
+			<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}">
+			</Input>
+
+			<Label text="Add a comment"></Label>
+			<TextArea placeholder="Add a comment" value="{Pomodoro>/task/desc}" width="100%"/>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>
