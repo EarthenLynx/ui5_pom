@@ -39,6 +39,7 @@ sap.ui.define([
 					const { task } = Pomodoro.getData();
 					task.time = msExpired;
 					task.status = status;
+					task.msExpired = msExpired;
 					Pomodoro.addToHistory({ ...task })
 					Toast.show("Phase completed")
 				} else {
