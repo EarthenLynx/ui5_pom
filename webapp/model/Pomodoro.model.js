@@ -114,19 +114,20 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     // {title, desc, time}
     addToHistory(task) {
-      if (!localStorage.getItem('history')) {
-        localStorage.setItem('history', JSON.stringify([]))
+      if (this.getProperty("/settings/history/enable")) {
+        const historyItems = this.getProperty('/history');
+        historyItems.push(task)
+        this.setProperty('/history', historyItems);
+
+        if (this.getProperty("/settings/history/enable")) {
+          if (!localStorage.getItem('history')) {
+            localStorage.setItem('history', JSON.stringify([]))
+          }
+          const historyItemsLocal = JSON.parse(localStorage.getItem('history'))
+          historyItemsLocal.push(task);
+          localStorage.setItem('history', JSON.stringify(historyItemsLocal));
+        }
       }
-
-      const historyItemsLocal = JSON.parse(localStorage.getItem('history'))
-      const historyItems = this.getProperty('/history');
-
-      historyItemsLocal.push(task);
-      historyItems.push(task)
-
-      localStorage.setItem('history', JSON.stringify(historyItemsLocal));
-      this.setProperty('/history', historyItems);
-
     },
 
     clearHistory(clearLocalStorage = false) {
@@ -175,7 +176,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       },
       history: {
         enable: true,
-        storeLocally: true,
+        storeLocally: false,
       }
     },
     task: { title: '', desc: '' },

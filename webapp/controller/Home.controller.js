@@ -35,13 +35,13 @@ sap.ui.define([
 			} else {
 				Pomodoro.stopTicking();
 				Pomodoro.setStatusNext();
-				if (msExpired > msTotal) {
+				if ((msExpired > msTotal) || !isWorking) {
 					const { task } = Pomodoro.getData();
 					task.time = msExpired;
 					Pomodoro.addToHistory({ ...task })
-					Toast.show("Completed task and added to history. ")
+					Toast.show("Phase completed")
 				} else {
-					Toast.show("Skipped this phase, no history item written")
+					Toast.show("Phase skipped")
 				}
 			}
 		},
