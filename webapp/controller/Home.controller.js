@@ -1,5 +1,5 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"./Basecontroller",
 	'sap/ui/core/Fragment',
 	'sap/m/MessageToast',
 	"../model/Pomodoro.model",
@@ -11,9 +11,10 @@ sap.ui.define([
 
 		formatter: formatter,
 
-		onInit: function () {
+		onInit() {
 			Pomodoro.init();
 			Pomodoro.tie(this);
+			Pomodoro.setProperty('/settings/notification/show', this.requestNotificationPermission());
 		},
 
 		handleToggleTimer() {
@@ -22,7 +23,7 @@ sap.ui.define([
 				return Pomodoro.stopTicking();
 			}
 			if (!ticking) {
-				return Pomodoro.startTicking();
+				return Pomodoro.startTicking(this);
 			}
 		},
 

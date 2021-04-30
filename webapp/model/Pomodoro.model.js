@@ -80,10 +80,10 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       this.setTimer(msTotal)
     },
 
-    startTicking() {
+    startTicking(handler) {
       this.stopTicking(true);
       const intervalHandler = setInterval(() => {
-        this.tick()
+        this.tick(handler)
       }, 1000);
       this.setProperty('/intervalHandler', intervalHandler);
       this.setProperty('/timer/ticking', true)
@@ -100,11 +100,12 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       this.setProperty('/timer/ticking', false)
     },
 
-    tick() {
+    tick(handler) {
       let { msLeft, msExpired } = this.getProperty('/timer');
       msLeft -= 1000;
       msExpired += 1000;
       if (msLeft === 0) {
+        handler.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
         this.stopTicking();
         setTimeout(() => this.setStatusNext(), 1000)
       }

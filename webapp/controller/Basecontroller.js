@@ -1,16 +1,39 @@
 sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
+    'sap/m/MessageToast',
     "sap/m/Text",
     "sap/m/Dialog",
     "sap/m/Button",
     "sap/m/MessageStrip",
   ],
-  function (Controller, Text, Dialog, Button, MessageStrip) {
+  function (Controller, Toast, Text, Dialog, Button, MessageStrip) {
     "use strict";
 
     return Controller.extend("sap.ui.demo.basicTemplate.controller.Basecontroller", {
-      onInit: function () { },
+
+      async requestNotificationPermission() {
+        const permission = await Notification.requestPermission()
+        if (permission === 'granted') {
+          Toast.show('You will now receive notifications whenever a phase is over')
+          return true;
+        } else {
+          Toast.show('You will receive no notifications. You can change your decision in the Settings panel');
+          return false
+        }
+      },
+
+      async sendNotification(title, body) {
+        const permission = await Notification.requestPermission()
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+          const notification = new Notification(title, body);
+          notification.onclick = (event) => {
+            event.preventDefault(); // prevent the browser from focusing the Notification's tab
+            window.open(location.href);
+          }
+        }
+      },
 
       _handleCreateMessageStrip(text, type, oId) {
         const oItem = this.getView().byId(oId);
