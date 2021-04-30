@@ -105,7 +105,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msLeft -= 1000;
       msExpired += 1000;
       if (msLeft === 0) {
-        handler.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
+        handler.handleFinishCurrentPhase()
         this.stopTicking();
         setTimeout(() => this.setStatusNext(), 1000)
       }
@@ -180,7 +180,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         storeLocally: false,
       }
     },
-    task: { title: '', desc: '' },
+    task: { title: 'Not defined', desc: 'None' },
     history: [],
     intervalHandler: null,
 

@@ -42,6 +42,7 @@ sap.ui.define([
 					task.status = status;
 					task.msExpired = msExpired;
 					Pomodoro.addToHistory({ ...task })
+					this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
 					Toast.show("Phase completed")
 				} else {
 					Toast.show("Phase skipped")

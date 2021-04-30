@@ -1,0 +1,62 @@
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+  xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core">
+  <Table id="idProductsTable" inset="false" items="{
+    path: 'Pomodoro>/history',
+    sorter: {
+      path: 'Name'
+    }
+  }">
+    <headerToolbar>
+      <OverflowToolbar>
+        <content>
+          <Title text="Products" level="H2"/>
+          <ToolbarSpacer />
+          <ComboBox id="idPopinLayout" placeholder="Popin layout options" change="onPopinLayoutChanged">
+            <items>
+              <core:Item text="Block" key="Block"/>
+              <core:Item text="Grid Large" key="GridLarge"/>
+              <core:Item text="Grid Small" key="GridSmall"/>
+            </items>
+          </ComboBox>
+          <Label text="Sticky options:" />
+          <CheckBox text="ColumnHeaders" select="onSelect"/>
+          <CheckBox text="HeaderToolbar" select="onSelect"/>
+          <CheckBox text="InfoToolbar" select="onSelect"/>
+          <ToggleButton id="toggleInfoToolbar" text="Hide/Show InfoToolbar" press="onToggleInfoToolbar" />
+        </content>
+      </OverflowToolbar>
+    </headerToolbar>
+    <infoToolbar>
+      <OverflowToolbar>
+        <Label text="Wide range of available products"/>
+      </OverflowToolbar>
+    </infoToolbar>
+    <columns>
+      <Column width="12em">
+        <Text text="Pomodoro" />
+      </Column>
+      <Column minScreenWidth="Tablet" demandPopin="true">
+        <Text text="Description" />
+      </Column>
+      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+        <Text text="Dauer" />
+      </Column>
+      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+        <Text text="Typ" />
+      </Column>
+    </columns>
+    <items>
+      <ColumnListItem>
+        <cells>
+          <ObjectIdentifier title="{Pomodoro>title}" text="{ProductId}"/>
+          <Text text="{Pomodoro>desc}" />
+          <Text text="{path: 'Pomodoro>time', formatter: '.formatter.formatMsToMinutes'}  " />
+          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
+        </cells>
+      </ColumnListItem>
+    </items>
+  </Table>
+</mvc:View>

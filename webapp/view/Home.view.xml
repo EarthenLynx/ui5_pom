@@ -8,6 +8,9 @@
 					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Pomodoro">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
 					</IconTabFilter>
+					<IconTabFilter design="Vertical" icon="sap-icon://activity-individual" text="History">
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Tasks" async="true" />
+					</IconTabFilter>
 					<IconTabFilter design="Vertical" icon="sap-icon://action-settings" text="Settings">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="true" />
 					</IconTabFilter>
