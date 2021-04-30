@@ -27,17 +27,18 @@ sap.ui.define([
 		},
 
 		handleFinishCurrentPhase() {
-			const { isWorking } = Pomodoro.getProperty('/status');
+			const { status } = Pomodoro.getData();
 			const { msTotal } = Pomodoro.getProperty('/settings/minFocus')
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
-			if (ticking && isWorking && (msExpired < msTotal)) {
+			if (ticking && status.isWorking && (msExpired < msTotal)) {
 				Toast.show(`Focus for at least ${(msTotal / 60000).toFixed(0)} minutes!`);
 			} else {
 				Pomodoro.stopTicking();
 				Pomodoro.setStatusNext();
-				if ((msExpired > msTotal) || !isWorking) {
+				if ((msExpired > msTotal) || !status.isWorking) {
 					const { task } = Pomodoro.getData();
 					task.time = msExpired;
+					task.status = status;
 					Pomodoro.addToHistory({ ...task })
 					Toast.show("Phase completed")
 				} else {
