@@ -35,7 +35,7 @@
       <Label text="Record history" />
       <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged in your browser. These data can be deleted by clicking on 'Delete history data' in the 'History' section" enabled="{Pomodoro>/settings/history/session}" state="{Pomodoro>/settings/history/persistent}" />
       <Label text="Desktop notifications" />
-      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/showNotification}" />
+      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/notification/desktopNotification}" />
 
       <core:Title text="History" />
       <Label text="Export history data" />

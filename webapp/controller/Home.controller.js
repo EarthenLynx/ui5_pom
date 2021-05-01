@@ -14,7 +14,7 @@ sap.ui.define([
 		async onInit() {
 			Pomodoro.init();
 			Pomodoro.tie(this);
-			Pomodoro.setProperty('/settings/showNotification', await this.requestNotificationPermission());
+			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
 			this.handleSynchronizeUserSettings();
 			this.handleSetUserTheme();
 		},
@@ -40,7 +40,7 @@ sap.ui.define([
 		handleFinishCurrentPhase() {
 			const { status, taskEstimation } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
-			const { showNotification } = Pomodoro.getProperty("/settings")
+			const { desktopNotification } = Pomodoro.getProperty("/settings/notification")
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
@@ -54,7 +54,7 @@ sap.ui.define([
 					task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
 					Pomodoro.addToHistory({ ...task })
 					Toast.show("Phase completed")
-					if (showNotification) {
+					if (desktopNotification) {
 						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
 					}
 				} else {

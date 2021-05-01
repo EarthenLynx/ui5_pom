@@ -20,11 +20,14 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     appearance: {
       theme: 'dark'
     },
-    showNotification: false,
+    notification: {
+      desktopNotification: false,
+      soundUrl: '/assets/highbell_ping.mp3'
+    },
     history: {
       session: true,
       persistent: false,
-    }
+    },
   }
 
   const Pomodoro = JSONModel.extend("sap.ui.demo.basicTemplate.model.PomodoroModel", {
