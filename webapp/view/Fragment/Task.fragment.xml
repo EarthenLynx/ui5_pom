@@ -9,7 +9,11 @@
 			<HBox>
 				<VBox class="sapUiTinyMargin">
 					<Label text="What are you focusing on?"></Label>
-					<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}" />
+					<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}" showSuggestion="true" suggestionItems="{Pomodoro>/history}">
+						<suggestionItems>
+							<core:Item text="{Pomodoro>title}" />
+						</suggestionItems>
+					</Input>
 				</VBox>
 
 				<VBox class="sapUiTinyMargin">

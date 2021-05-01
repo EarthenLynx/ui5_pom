@@ -20,7 +20,15 @@ sap.ui.define([], function () {
 					return "Break"
 				}
 			}
+		},
 
+		formatUniqueHistory(array) {
+			if (array) {
+				return array.map(item => item.title)
+					.filter((value, index, self) => self.indexOf(value) === index)
+			} else {
+				return []
+			}
 		}
 	};
 });
