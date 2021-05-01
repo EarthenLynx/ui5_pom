@@ -12,9 +12,10 @@
         </VBox>
         <ProgressIndicator state="{= (${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100) >= 80 ? 'Success' : 'Information'}" width="20rem" class="sapUiSmallMarginBottom" percentValue="{= ${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100 }"/>
         <VBox alignItems="Center">
+          <Button type="Transparent" text="Choose a focus" icon="sap-icon://target-group" press="handleOpenTaskPopover" />
           <HBox>
-            <Button type="{= ${Pomodoro>/timer/msExpired} > ${Pomodoro>/timer/minFocus} ? 'Success' : 'Default'}" class="sapUiTinyMargin" tooltip="Finish active phase" icon="sap-icon://accept" press="handleFinishCurrentPhase" />
-            <Button class="sapUiTinyMargin" tooltip="Toggle timer" icon="{=${Pomodoro>/timer/ticking} ? 'sap-icon://pause' : 'sap-icon://future'}" press="handleToggleTimer" />
+            <Button type="{= ${Pomodoro>/timer/msExpired} > ${Pomodoro>/timer/minFocus} ? 'Success' : 'Default'}" class="sapUiTinyMargin" tooltip="Finish active phase" icon="sap-icon://future" press="handleFinishCurrentPhase" />
+            <Button class="sapUiTinyMargin" tooltip="Toggle timer" icon="{=${Pomodoro>/timer/ticking} ? 'sap-icon://pause' : 'sap-icon://media-play'}" press="handleToggleTimer" />
             <Button class="sapUiTinyMargin" tooltip="Reset this phase" icon="sap-icon://stop" press="handleResetCurrentPhase" />
           </HBox>
         </VBox>

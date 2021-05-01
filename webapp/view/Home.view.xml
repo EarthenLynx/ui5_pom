@@ -20,7 +20,6 @@
 		<footer>
 			<OverflowToolbar id="otbFooter">
 				<ToolbarSpacer/>
-				<Button text="Task" icon="sap-icon://target-group" press="handleOpenTaskPopover" />
 			</OverflowToolbar>
 		</footer>
 	</Page>
