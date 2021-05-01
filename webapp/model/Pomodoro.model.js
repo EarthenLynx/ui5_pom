@@ -173,7 +173,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     syncHistory() {
       const historyItemsLocal = localStorage.getItem('history')
-      if (!!historyItemsLocal) {
+      if (!!historyItemsLocal && historyItemsLocal !== '[]') {
         this.setProperty('/history', JSON.parse(historyItemsLocal));
         return true;
       } else {

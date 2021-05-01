@@ -22,18 +22,18 @@
     </infoToolbar>
     <columns>
       <Column>
-        <Text text="Pomodoro" />
+        <Text text="Phase" />
       </Column>
-      <Column minScreenWidth="Tablet" demandPopin="true">
+      <Column minScreenWidth="Desktop" demandPopin="true">
         <Text text="Description" />
       </Column>
-      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Geplante Dauer" />
       </Column>
-      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Tats. Dauer" />
       </Column>
-      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Typ" />
       </Column>
     </columns>
