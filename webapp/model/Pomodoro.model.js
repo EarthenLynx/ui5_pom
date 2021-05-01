@@ -22,8 +22,8 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
     showNotification: false,
     history: {
-      enable: true,
-      storeLocally: false,
+      session: true,
+      persistent: false,
     }
   }
 
@@ -147,14 +147,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       this.setProperty('/timer/msExpired', msExpired)
     },
 
-    // {title, desc, time}
     addToHistory(task) {
-      if (this.getProperty("/settings/history/enable")) {
+      if (this.getProperty("/settings/history/session") === true) {
         const historyItems = this.getProperty('/history');
         historyItems.push(task)
         this.setProperty('/history', historyItems);
 
-        if (this.getProperty("/settings/history/enable")) {
+        if (this.getProperty("/settings/history/persistent") === true) {
           if (!localStorage.getItem('history')) {
             localStorage.setItem('history', JSON.stringify([]))
           }
