@@ -3,12 +3,12 @@
 	xmlns:mvc="sap.ui.core.mvc">
 	<Page id="page" title="Pomodoro">
 		<content>
-			<IconTabBar stretchContentHeight="true" backgroundDesign="Transparent">
+			<IconTabBar applyContentPadding="false" stretchContentHeight="true" backgroundDesign="Transparent">
 				<items>
 					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Timer">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
 					</IconTabFilter>
-					<IconTabFilter design="Vertical" icon="sap-icon://activity-individual" text="Tasks">
+					<IconTabFilter count="{= ${Pomodoro>/history}.length }" design="Vertical" icon="sap-icon://activity-individual" text="Tasks">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Tasks" async="true" />
 					</IconTabFilter>
 					<IconTabFilter design="Vertical" icon="sap-icon://action-settings" text="Settings">
