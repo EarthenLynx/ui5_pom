@@ -16,6 +16,7 @@ sap.ui.define([
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/showNotification', await this.requestNotificationPermission());
 			this.handleSynchronizeUserSettings();
+			this.handleSetUserTheme();
 		},
 
 		handleToggleTimer() {
@@ -138,17 +139,6 @@ sap.ui.define([
 
 		handleExportHistory() { },
 
-		handleSetUserTheme() {
-			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				Pomodoro.setProperty('/settings/appearance/theme', 'dark');
-			}
-			// Check for user-theme localstorage
-			if (localStorage.getItem('user-theme')) {
-				const userTheme = localStorage.getItem('user-theme')
-				this._toggleTheme(userTheme)
-			}
-		},
-
 		handleSetUserSettings() {
 			try {
 				Pomodoro.saveUserSettings();
@@ -169,18 +159,5 @@ sap.ui.define([
 				console.log("Loaded user session data from local storage")
 			}
 		},
-
-		_toggleTheme(theme) {
-			if (theme === 'dark') {
-				Pomodoro.setProperty('/settings/appearance/theme', 'light');
-				localStorage.setItem('user-theme', 'light')
-				sap.ui.getCore().applyTheme('sap_fiori_3')
-			} else if (theme === 'light') {
-				Pomodoro.setProperty('/settings/appearance/theme', 'dark');
-				localStorage.setItem('user-theme', 'dark')
-				sap.ui.getCore().applyTheme('sap_fiori_3_dark')
-			}
-		}
-
 	});
 });

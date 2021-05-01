@@ -1,13 +1,14 @@
 sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
+    "../model/Pomodoro.model",
     'sap/m/MessageToast',
     "sap/m/Text",
     "sap/m/Dialog",
     "sap/m/Button",
     "sap/m/MessageStrip",
   ],
-  function (Controller, Toast, Text, Dialog, Button, MessageStrip) {
+  function (Controller, Pomodoro, Toast, Text, Dialog, Button, MessageStrip) {
     "use strict";
 
     return Controller.extend("sap.ui.demo.basicTemplate.controller.Basecontroller", {
@@ -86,6 +87,41 @@ sap.ui.define(
         oDialog.open();
         return;
       },
+
+      handleSetUserTheme() {
+        // Check for media preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          this._setTheme('dark')
+        }
+
+        // Then, check for user-theme localstorage and overwrite, if necessary
+        if (localStorage.getItem('user-theme')) {
+          const userTheme = localStorage.getItem('user-theme')
+          this._setTheme(userTheme)
+        }
+      },
+
+      handleToggleUserTheme() {
+        const userTheme = localStorage.getItem('user-theme')
+        if (userTheme === 'dark') {
+          this._setTheme('light')
+        } else {
+          this._setTheme('dark')
+        }
+      },
+
+      _setTheme(theme) {
+        if (theme === 'dark') {
+          // FIXME: Remove the pomodoro or replace it if you have other dependencies
+          Pomodoro.setProperty('/settings/appearance/theme', 'dark');
+          localStorage.setItem('user-theme', 'dark')
+          sap.ui.getCore().applyTheme('sap_fiori_3_dark')
+        } else if (theme === 'light') {
+          Pomodoro.setProperty('/settings/appearance/theme', 'light');
+          localStorage.setItem('user-theme', 'light')
+          sap.ui.getCore().applyTheme('sap_fiori_3')
+        }
+      }
     });
   }
 );

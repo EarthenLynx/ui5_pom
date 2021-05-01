@@ -29,7 +29,7 @@
 
       <core:Title text="Preferences" />
       <Label text="Nightshift" />
-      <Switch class="sapUiSmallMarginBottom" tooltip="Switch between normal and dark theme" change="handleSetUserTheme" state="{=${Pomodoro>/settings/appearance/theme} === 'dark' ? true : false}" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="Switch between normal and dark theme" change="handleToggleUserTheme" state="{=${Pomodoro>/settings/appearance/theme} === 'dark' ? true : false}" />
       <Label text="Session log" />
       <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged during this session" state="{Pomodoro>/settings/history/session}" />
       <Label text="Record history" />
