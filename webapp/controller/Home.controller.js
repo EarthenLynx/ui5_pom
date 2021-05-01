@@ -35,7 +35,7 @@ sap.ui.define([
 		 * - Show a desktop notification
 		 */
 		handleFinishCurrentPhase() {
-			const { status } = Pomodoro.getData();
+			const { status, taskEstimation } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
 			const { showNotification } = Pomodoro.getProperty("/settings")
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
@@ -48,6 +48,7 @@ sap.ui.define([
 					const { task } = Pomodoro.getData();
 					task.status = status;
 					task.msExpired = msExpired;
+					task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
 					Pomodoro.addToHistory({ ...task })
 					Toast.show("Phase completed")
 					if (showNotification) {

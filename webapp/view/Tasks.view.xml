@@ -21,14 +21,17 @@
       </OverflowToolbar>
     </infoToolbar>
     <columns>
-      <Column width="12em">
+      <Column>
         <Text text="Pomodoro" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true">
         <Text text="Description" />
       </Column>
       <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
-        <Text text="Dauer" />
+        <Text text="Geplante Dauer" />
+      </Column>
+      <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+        <Text text="Tats. Dauer" />
       </Column>
       <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
         <Text text="Typ" />
@@ -37,8 +40,9 @@
     <items>
       <ColumnListItem>
         <cells>
-          <ObjectIdentifier title="{Pomodoro>title}" text="{ProductId}"/>
+          <ObjectIdentifier  text="{Pomodoro>title}"/>
           <Text text="{Pomodoro>desc}" />
+            <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToMinutes'}  " />
           <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToMinutes'}  " />
           <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
         </cells>

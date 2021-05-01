@@ -5,12 +5,25 @@
 			<Button text="Close" press="handleCloseTaskPopover" />
 		</endButton>
 		<content>
-			<Label text="What are you focusing on?"></Label>
-			<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}">
-			</Input>
 
-			<Label text="Add a comment"></Label>
-			<TextArea placeholder="Add a comment" value="{Pomodoro>/task/desc}" width="100%"/>
+			<HBox>
+				<VBox class="sapUiTinyMargin">
+					<Label text="What are you focusing on?"></Label>
+					<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}" />
+				</VBox>
+
+				<VBox class="sapUiTinyMargin">
+					<Label text="Time estimation (H)"></Label>
+					<StepInput value="{Pomodoro>/taskEstimation}" displayValuePrecision="2" width="8rem" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+				</VBox>
+			</HBox>
+
+			<VBox class="sapUiTinyMargin">
+				<Label text="Add a comment"></Label>
+				<TextArea placeholder="Add a comment" value="{Pomodoro>/task/desc}" width="100%"/>
+			</VBox>
+
+			<!-- taskEstimation -->
 		</content>
 	</ResponsivePopover>
 </core:FragmentDefinition>
