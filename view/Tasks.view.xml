@@ -1,0 +1,52 @@
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+  xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core">
+  <Table inset="false" items="{Pomodoro>/history}">
+    <headerToolbar>
+      <OverflowToolbar>
+        <content>
+          <Title text="Tasklist" level="H2"/>
+          <ToolbarSpacer />
+          <!--  -->
+          <Button text="Synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
+          <Button text="Clear" tooltip="This will only delete tasks from your current session. To delete history data, go to 'Settings'" press="handleDeleteHistory" />
+        </content>
+      </OverflowToolbar>
+    </headerToolbar>
+    <infoToolbar>
+      <OverflowToolbar>
+        <Label text="Your past pomodoros are logged here. If you synchronize, these data might be lost if you have not kept a history before. You can permanently remove older tasks in your settings"/>
+      </OverflowToolbar>
+    </infoToolbar>
+    <columns>
+      <Column>
+        <Text text="Phase" />
+      </Column>
+      <Column minScreenWidth="Desktop" demandPopin="true">
+        <Text text="Description" />
+      </Column>
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+        <Text text="Planned" />
+      </Column>
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+        <Text text="Duration" />
+      </Column>
+      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+        <Text text="Typ" />
+      </Column>
+    </columns>
+    <items>
+      <ColumnListItem>
+        <cells>
+          <ObjectIdentifier  text="{Pomodoro>title}"/>
+          <Text text="{Pomodoro>desc}" />
+            <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToMinutes'}  " />
+          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToMinutes'}  " />
+          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
+        </cells>
+      </ColumnListItem>
+    </items>
+  </Table>
+</mvc:View>

@@ -1,0 +1,1 @@
+sap.ui.define([],function(){"use strict";return{formatMsToMinutes(e){if(e){const r=Math.floor(e/6e4);const t=(e%6e4/1e3).toFixed(0);return r+":"+(t<10?"0":"")+t}else{return"00:00"}},formatStatusToString(e){if(e){if(e.isWorking===true){return"Work"}else{return"Break"}}},formatUniqueHistory(e){if(e){return e.map(e=>e.title).filter((e,r,t)=>t.indexOf(e)===r)}else{return[]}}}});

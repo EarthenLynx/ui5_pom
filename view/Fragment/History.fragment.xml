@@ -1,0 +1,19 @@
+<core:FragmentDefinition xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="history-dialog" title="Delete history data" draggable="true" class="sapUiContentPadding">
+    <beginButton>
+      <Button type="Reject" text="Delete" press="handleDeleteHistory(true)" />
+    </beginButton>
+    <endButton>
+      <Button text="Cancel" press="handleCloseHistoryDialog" />
+    </endButton>
+
+    <content>
+      <VBox alignItems="Center">
+        <Text text="The following action will delete all history data from your mashine."></Text>
+        <Text text="This cannot be undone. Consider making a backup of your data before you continue"></Text>
+        <Button type="Transparent" text="Export history data as .csv file" icon="sap-icon://save" press="handleExportHistory" />
+      </VBox>
+		</content>
+  </Dialog>
+</core:FragmentDefinition>
