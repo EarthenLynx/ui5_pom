@@ -139,7 +139,27 @@ sap.ui.define([
 			Pomodoro.clearHistory(clearLocalStorage);
 		},
 
-		handleExportHistory() { },
+		handleExportHistory() {
+			const { history } = Pomodoro.getData();
+			const rowHeaders = Object.keys(history[0])
+			const replacer = (key, value) => { return value === null ? '' : value }
+			let csv = history.map((row) => {
+				return rowHeaders.map((fieldName) => {
+					return JSON.stringify(row[fieldName], replacer)
+				}).join(';')
+			})
+
+			csv.unshift(rowHeaders.join(';')) // add header column
+			csv = csv.join('\r\n');
+
+			const csvFile = new Blob([csv]);
+			const a = document.createElement("a");
+			a.href = URL.createObjectURL(csvFile);
+			a.download = "filename.csv";
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		},
 
 		handleSetUserSettings() {
 			try {
