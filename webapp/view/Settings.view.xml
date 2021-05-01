@@ -5,6 +5,14 @@
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core">
   <f:SimpleForm title="Settings" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
+    <f:toolbar>
+      <Toolbar id="TB1">
+        <Title id="Title1" text="Address"/>
+        <ToolbarSpacer />
+        <Button icon="sap-icon://reset" tooltip="Restore standard settings" press="handleResetUserSettings"/>
+        <Button icon="sap-icon://save" tooltip="Save your settings" press="handleSetUserSettings" />
+      </Toolbar>
+    </f:toolbar>
     <f:content>
       <core:Title text="Pomodoro intervals" />
       <Label text="Focus interval - {path: 'Pomodoro>/settings/pomodoro/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
@@ -27,12 +35,13 @@
       <Label text="Record history" />
       <Switch class="sapUiSmallMarginBottom" enabled="{Pomodoro>/settings/history/enable}" state="{Pomodoro>/settings/history/storeLocally}" />
       <Label text="Desktop notifications" />
-      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/notification/show}" />
+      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/showNotification}" />
 
-      <core:Title text="Task History" />  
+      <core:Title text="Task History" />
       <Label text="Export history data" />
-      <Button width="2rem" icon="sap-icon://save" tooltip="Export history data as .csv" press="handleExportHistory" />    
-      
+      <!--  -->
+      <Button width="2rem" icon="sap-icon://save" tooltip="Export history data as .csv" press="handleExportHistory" />
+
       <Label text="Delete history data" />
       <Button width="2rem" type="Reject" icon="sap-icon://delete" tooltip="Delete history data stored on your computer" press="handleOpenHistoryDialog" />
 

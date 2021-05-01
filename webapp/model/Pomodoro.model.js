@@ -1,6 +1,32 @@
 sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
   "use strict";
 
+  const pomodoroDefaultSettings = {
+    pomodoro: {
+      name: 'Working',
+      msTotal: 1500000,
+    },
+    shortBreak: {
+      name: 'Short Break',
+      msTotal: 300000,
+    },
+    longBreak: {
+      name: 'Long break',
+      msTotal: 900000,
+    },
+    minFocus: {
+      msTotal: 600000,
+    },
+    appearance: {
+      theme: 'dark'
+    },
+    showNotification: false,
+    history: {
+      enable: true,
+      storeLocally: false,
+    }
+  }
+
   const Pomodoro = JSONModel.extend("sap.ui.demo.basicTemplate.model.PomodoroModel", {
     modelname: 'Pomodoro',
 
@@ -144,9 +170,34 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
 
     syncHistory() {
-      const historyItemsLocal = JSON.parse(localStorage.getItem('history'))
-      this.setProperty('/history', historyItemsLocal);
+      const historyItemsLocal = localStorage.getItem('history')
+      if (!!historyItemsLocal) {
+        this.setProperty('/history', JSON.parse(historyItemsLocal));
+        return true;
+      } else {
+        return false;
+      }
     },
+
+    saveUserSettings() {
+      const { settings } = this.getData();
+      console.log(settings)
+      localStorage.setItem('pomodoro-user-settings', JSON.stringify(settings));
+    },
+
+    syncUserSettings() {
+      const settings = localStorage.getItem('pomodoro-user-settings');
+      if (!!settings) {
+        this.setProperty('/settings', JSON.parse(settings));
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    resetUserSettings() {
+      this.setProperty('/settings', { ...pomodoroDefaultSettings });
+    }
   })
 
   return new Pomodoro({
@@ -162,33 +213,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       isPausingShort: false,
       isPausingLong: false,
     },
-    settings: {
-      pomodoro: {
-        name: 'Working',
-        msTotal: 1500000,
-      },
-      shortBreak: {
-        name: 'Short Break',
-        msTotal: 300000,
-      },
-      longBreak: {
-        name: 'Long break',
-        msTotal: 900000,
-      },
-      minFocus: {
-        msTotal: 600000,
-      },
-      appearance: {
-        theme: 'dark'
-      },
-      notification: {
-        show: true,
-      },
-      history: {
-        enable: true,
-        storeLocally: false,
-      }
-    },
+    settings: { ...pomodoroDefaultSettings },
     task: { title: 'Not defined', desc: 'None' },
     history: [],
     intervalHandler: null,

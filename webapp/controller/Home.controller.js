@@ -11,10 +11,11 @@ sap.ui.define([
 
 		formatter: formatter,
 
-		onInit() {
+		async onInit() {
 			Pomodoro.init();
 			Pomodoro.tie(this);
-			Pomodoro.setProperty('/settings/notification/show', this.requestNotificationPermission());
+			Pomodoro.setProperty('/settings/showNotification', await this.requestNotificationPermission());
+			this.handleSynchronizeUserSettings();
 		},
 
 		handleToggleTimer() {
@@ -36,7 +37,7 @@ sap.ui.define([
 		handleFinishCurrentPhase() {
 			const { status } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
-			const { show: showNotification } = Pomodoro.getProperty("/settings/notification")
+			const { showNotification } = Pomodoro.getProperty("/settings")
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
@@ -113,7 +114,12 @@ sap.ui.define([
 		},
 
 		handleSynchronizeHistory() {
-			Pomodoro.syncHistory()
+			const wasSynced = Pomodoro.syncHistory()
+			if (wasSynced) {
+				Toast.show("Loaded session data from history")
+			} else {
+				Toast.show("No history data found")
+			}
 		},
 
 		handleDeleteHistory(clearLocalStorage = false) {
@@ -141,6 +147,27 @@ sap.ui.define([
 			if (localStorage.getItem('user-theme')) {
 				const userTheme = localStorage.getItem('user-theme')
 				this._toggleTheme(userTheme)
+			}
+		},
+
+		handleSetUserSettings() {
+			try {
+				Pomodoro.saveUserSettings();
+				Toast.show("Saved your preferences");
+			} catch (e) {
+				Toast.show(`Could not save changes: ${e}`)
+			}
+		},
+
+		handleResetUserSettings() {
+			Pomodoro.resetUserSettings();
+			Toast.show("Restored standard settings. Make sure to save them");
+		},
+
+		handleSynchronizeUserSettings() {
+			const settingsWereSynced = Pomodoro.syncUserSettings()
+			if (settingsWereSynced) {
+				console.log("Loaded user session data from local storage")
 			}
 		},
 
