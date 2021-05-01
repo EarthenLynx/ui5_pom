@@ -123,8 +123,6 @@ sap.ui.define([
 		},
 
 		handleDeleteHistory(clearLocalStorage = false) {
-
-
 			if (clearLocalStorage === true) {
 				Toast.show("All historical data has been removed from your computer")
 			}

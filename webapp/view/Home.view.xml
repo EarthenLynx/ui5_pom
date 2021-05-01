@@ -1,11 +1,11 @@
 <mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
-	<Page id="page" title="Pomodoro Tracker">
+	<Page id="page" title="Pomodoro">
 		<content>
 			<IconTabBar stretchContentHeight="true" backgroundDesign="Transparent">
 				<items>
-					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Pomodoro">
+					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Timer">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
 					</IconTabFilter>
 					<IconTabFilter design="Vertical" icon="sap-icon://activity-individual" text="Tasks">

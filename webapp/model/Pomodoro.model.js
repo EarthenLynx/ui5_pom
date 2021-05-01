@@ -167,7 +167,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     clearHistory(clearLocalStorage = false) {
       this.setProperty('/history', [])
-      if (clearLocalStorage) {
+      if (clearLocalStorage === true) {
         localStorage.setItem('history', JSON.stringify([]));
       }
     },

@@ -27,20 +27,19 @@
       <Label text="Min. focus - {path: 'Pomodoro>/settings/minFocus/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
       <Slider step="30000" enableTickmarks="true" value="{Pomodoro>/settings/minFocus/msTotal}" min="0" max="1500000" class="sapUiTinyMarginBottom" />
 
-      <core:Title text="User preference" />
-      <Label text="Dark theme" />
-      <Switch class="sapUiSmallMarginBottom" change="handleSetUserTheme" state="{=${Pomodoro>/settings/appearance/theme} === 'dark' ? true : false}" />
-      <Label text="Activate history" />
-      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/history/enable}" />
+      <core:Title text="Preferences" />
+      <Label text="Nightshift" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="Switch between normal and dark theme" change="handleSetUserTheme" state="{=${Pomodoro>/settings/appearance/theme} === 'dark' ? true : false}" />
+      <Label text="Session log" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged during this session" state="{Pomodoro>/settings/history/enable}" />
       <Label text="Record history" />
-      <Switch class="sapUiSmallMarginBottom" enabled="{Pomodoro>/settings/history/enable}" state="{Pomodoro>/settings/history/storeLocally}" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged in your browser. These data can be deleted by clicking on 'Delete history data' in the 'History' section" enabled="{Pomodoro>/settings/history/enable}" state="{Pomodoro>/settings/history/storeLocally}" />
       <Label text="Desktop notifications" />
       <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/showNotification}" />
 
-      <core:Title text="Task History" />
+      <core:Title text="History" />
       <Label text="Export history data" />
-      <!--  -->
-      <Button width="2rem" icon="sap-icon://save" tooltip="Export history data as .csv" press="handleExportHistory" />
+      <Button width="2rem" icon="sap-icon://download" tooltip="Export history data as .csv" press="handleExportHistory" />
 
       <Label text="Delete history data" />
       <Button width="2rem" type="Reject" icon="sap-icon://delete" tooltip="Delete history data stored on your computer" press="handleOpenHistoryDialog" />
