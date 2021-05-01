@@ -43,6 +43,8 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       const { isWorking, isPausingShort, isPausingLong } = this.getProperty('/status');
       const { history } = this.getData();
 
+      console.log(this.getProperty('/status'))
+
       if ((history.length + 2) % 8 === 0) {
         return this.setStatusPausingLong();
       }
@@ -136,9 +138,10 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msExpired += 1000;
       document.title = `${statusName} - ${(msLeft / 60000).toFixed(1)} Minutes left`
       if (msLeft === 0) {
-        handler.handleFinishCurrentPhase()
-        this.stopTicking();
-        setTimeout(() => this.setStatusNext(), 1000)
+        setTimeout(() => {
+          document.title = `Finished ${statusName}`
+          handler.handleFinishCurrentPhase()
+        }, 1000)
       }
       this.setProperty('/timer/msLeft', msLeft)
       this.setProperty('/timer/msExpired', msExpired)
