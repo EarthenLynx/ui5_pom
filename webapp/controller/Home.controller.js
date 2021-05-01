@@ -86,13 +86,52 @@ sap.ui.define([
 			this._taskPopover.then(popover => popover.close());
 		},
 
+		handleOpenHistoryDialog() {
+			const oView = this.getView();
+			// create dialog lazily
+			if (!this.byId("history-dialog")) {
+				// load asynchronous XML fragment
+				Fragment.load({
+					id: oView.getId(),
+					name: "sap.ui.demo.basicTemplate.view.Fragment.History",
+					controller: this
+				}).then((oDialog) => {
+					// connect dialog to the root view of this component (models, lifecycle)
+					oView.addDependent(oDialog);
+					oDialog.open();
+				});
+			} else {
+				this.byId("history-dialog").open();
+			}
+		},
+
+		handleCloseHistoryDialog() {
+			const oDialog = this.byId("history-dialog");
+			if (oDialog) {
+				oDialog.close();
+			}
+		},
+
 		handleSynchronizeHistory() {
 			Pomodoro.syncHistory()
 		},
 
-		handleDeleteHistory() {
-			Pomodoro.clearHistory();
+		handleDeleteHistory(clearLocalStorage = false) {
+
+
+			if (clearLocalStorage === true) {
+				Toast.show("All historical data has been removed from your computer")
+			}
+
+			if (clearLocalStorage === false) {
+				Toast.show("Session data cleared")
+			}
+
+			this.handleCloseHistoryDialog();
+			Pomodoro.clearHistory(clearLocalStorage);
 		},
+
+		handleExportHistory() { },
 
 		handleSetUserTheme() {
 			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {

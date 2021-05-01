@@ -29,7 +29,9 @@
       <Label text="Desktop notifications" />
       <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/notification/show}" />
 
-
+      <core:Title text="History data" />      
+      <Label text="Delete history data" />
+      <Button type="Reject" icon="sap-icon://delete" tooltip="Delete history data stored on your computer" press="handleOpenHistoryDialog" />
 
     </f:content>
   </f:SimpleForm>

@@ -10,8 +10,8 @@
           <Title text="Tasklist" level="H2"/>
           <ToolbarSpacer />
           <!--  -->
-          <Button text="Synchronize" press="handleSynchronizeHistory" />
-          <Button text="Delete history" press="handleDeleteHistory" />
+          <Button text="Synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
+          <Button text="Clear" tooltip="This will only delete tasks from your current session. To delete history data, go to 'Settings'" press="handleDeleteHistory" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
