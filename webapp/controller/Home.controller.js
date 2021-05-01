@@ -181,5 +181,12 @@ sap.ui.define([
 				console.log("Loaded user session data from local storage")
 			}
 		},
+
+		handleSynchronizeMinFocus() {
+			const { pomodoro, minFocus } = Pomodoro.getProperty('/settings')
+			if(pomodoro.msTotal < minFocus.msTotal) {
+				Pomodoro.setProperty('/settings/minFocus/msTotal', pomodoro.msTotal);
+			}
+		}
 	});
 });
