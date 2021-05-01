@@ -13,13 +13,16 @@ sap.ui.define(
     return Controller.extend("sap.ui.demo.basicTemplate.controller.Basecontroller", {
 
       async requestNotificationPermission() {
-        const permission = await Notification.requestPermission()
-        if (permission === 'granted') {
-          Toast.show('You will now receive notifications whenever a phase is over')
-          return true;
-        } else {
-          Toast.show('You will receive no notifications. You can change your decision in the Settings panel');
-          return false
+        const isGranted = Notification.permission;
+        if (isGranted !== 'granted') {
+          const userPermission = await Notification.requestPermission()
+          if (userPermission === 'granted') {
+            Toast.show('You will now receive notifications whenever a phase is over')
+            return true;
+          } else {
+            Toast.show('You will receive no notifications. You can change your decision in the Settings panel');
+            return false
+          }
         }
       },
 

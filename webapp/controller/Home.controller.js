@@ -27,19 +27,24 @@ sap.ui.define([
 			}
 		},
 
+		/**
+		 * - Check whether user has focused for the min. amount of time
+		 * - Stop time and set timer to next phase
+		 * - Add item to history, given user has configured
+		 * - Show a desktop notification
+		 */
 		handleFinishCurrentPhase() {
 			const { status } = Pomodoro.getData();
-			const { msTotal } = Pomodoro.getProperty('/settings/minFocus')
+			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
 			const { show: showNotification } = Pomodoro.getProperty("/settings/notification")
 			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
-			if (ticking && status.isWorking && (msExpired < msTotal)) {
-				Toast.show(`Focus for at least ${(msTotal / 60000).toFixed(0)} minutes!`);
+			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
+				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
 			} else {
 				Pomodoro.stopTicking();
 				Pomodoro.setStatusNext();
-				if ((msExpired > msTotal) || !status.isWorking) {
+				if ((msExpired > msMinFocus) || !status.isWorking) {
 					const { task } = Pomodoro.getData();
-					task.time = msExpired;
 					task.status = status;
 					task.msExpired = msExpired;
 					Pomodoro.addToHistory({ ...task })
