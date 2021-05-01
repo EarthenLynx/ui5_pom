@@ -17,7 +17,7 @@
     </headerToolbar>
     <infoToolbar>
       <OverflowToolbar>
-        <Label text="Your past pomodoros are logged here. You can permanently remove older tasks in your settings"/>
+        <Label text="Your past pomodoros are logged here. If you synchronize, these data might be lost if you have not kept a history before. You can permanently remove older tasks in your settings"/>
       </OverflowToolbar>
     </infoToolbar>
     <columns>
@@ -28,10 +28,10 @@
         <Text text="Description" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Geplante Dauer" />
+        <Text text="Planned" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Tats. Dauer" />
+        <Text text="Duration" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Typ" />

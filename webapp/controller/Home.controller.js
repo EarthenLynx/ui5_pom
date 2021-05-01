@@ -22,9 +22,11 @@ sap.ui.define([
 		handleToggleTimer() {
 			const { ticking } = Pomodoro.getProperty('/timer');
 			if (ticking) {
+				Toast.show("Timer stopped");
 				return Pomodoro.stopTicking();
 			}
 			if (!ticking) {
+				Toast.show("Timer started");
 				return Pomodoro.startTicking(this);
 			}
 		},
