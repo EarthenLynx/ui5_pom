@@ -22,7 +22,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
     notification: {
       desktopNotification: false,
-      soundUrl: '/assets/highbell_ping.mp3'
+      soundUrl: '/assets/boxing_gong.mp3'
     },
     history: {
       session: true,
@@ -141,6 +141,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msExpired += 1000;
       document.title = `${statusName} - ${(msLeft / 60000).toFixed(1)} Minutes left`
       if (msLeft === 0) {
+        this.playPhaseDoneAudio();
         setTimeout(() => {
           document.title = `Finished ${statusName}`
           handler.handleFinishCurrentPhase()
@@ -201,7 +202,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     resetUserSettings() {
       this.setProperty('/settings', { ...pomodoroDefaultSettings });
-    }
+    },
+
+    playPhaseDoneAudio() {
+      const {soundUrl} = this.getProperty("/settings/notification");
+      const audio = new Audio(soundUrl);
+      audio.play();
+    },
   })
 
   return new Pomodoro({
