@@ -46,8 +46,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       const { isWorking, isPausingShort, isPausingLong } = this.getProperty('/status');
       const { history } = this.getData();
 
-      console.log(this.getProperty('/status'))
-
       if ((history.length + 2) % 8 === 0) {
         return this.setStatusPausingLong();
       }
