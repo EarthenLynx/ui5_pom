@@ -181,7 +181,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
 
     saveUserSettings() {
       const { settings } = this.getData();
-      console.log(settings)
       localStorage.setItem('pomodoro-user-settings', JSON.stringify(settings));
     },
 

@@ -39,7 +39,7 @@
         <cells>
           <ObjectIdentifier title="{Pomodoro>title}" text="{ProductId}"/>
           <Text text="{Pomodoro>desc}" />
-          <Text text="{path: 'Pomodoro>time', formatter: '.formatter.formatMsToMinutes'}  " />
+          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToMinutes'}  " />
           <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
         </cells>
       </ColumnListItem>
