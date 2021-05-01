@@ -29,9 +29,12 @@
       <Label text="Desktop notifications" />
       <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/notification/show}" />
 
-      <core:Title text="History data" />      
+      <core:Title text="Task History" />  
+      <Label text="Export history data" />
+      <Button width="2rem" icon="sap-icon://save" tooltip="Export history data as .csv" press="handleExportHistory" />    
+      
       <Label text="Delete history data" />
-      <Button type="Reject" icon="sap-icon://delete" tooltip="Delete history data stored on your computer" press="handleOpenHistoryDialog" />
+      <Button width="2rem" type="Reject" icon="sap-icon://delete" tooltip="Delete history data stored on your computer" press="handleOpenHistoryDialog" />
 
     </f:content>
   </f:SimpleForm>
