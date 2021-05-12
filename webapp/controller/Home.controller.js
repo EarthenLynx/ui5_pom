@@ -15,6 +15,7 @@ sap.ui.define([
 			Pomodoro.init();
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
+			Pomodoro.syncHistory();
 			this.handleSynchronizeUserSettings();
 			this.handleSetUserTheme();
 		},
