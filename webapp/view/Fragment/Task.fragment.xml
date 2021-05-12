@@ -10,12 +10,12 @@
 				<Label text="What are you focusing on?"></Label>
 				<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}" showSuggestion="true" suggestionItems="{Pomodoro>/history}">
 					<suggestionItems>
-						<core:Item text="{Pomodoro>title}" additionalText="{path: 'SupplierName', formatter: .}"/>
+						<core:ListItem text="{Pomodoro>title}" additionalText="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} - {path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Pomodoro>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
 					</suggestionItems>
 				</Input>
 
 				<Label text="Time estimation (H)"></Label>
-				<StepInput value="{Pomodoro>/taskEstimation}" displayValuePrecision="2" width="16rem" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+				<StepInput value="{Pomodoro>/taskEstimation}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
 
 				<Label text="Add a comment"></Label>
 				<TextArea placeholder="Add a comment" value="{Pomodoro>/task/desc}" width="100%"/>
