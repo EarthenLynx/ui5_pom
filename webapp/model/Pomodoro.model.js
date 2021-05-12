@@ -1,4 +1,4 @@
-sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONModel, Config) {
+sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model', './Task.model'], function (JSONModel, Config) {
   'use strict';
 
   const Pomodoro = JSONModel.extend(
@@ -18,7 +18,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       setStatusNext() {
         const { isWorking, isPausing } =
           this.getProperty('/status');
-        if ((this.getProperty("/timer/counter")) / 8 >= 1 && isWorking === true) {
+        if ((this.getProperty('/timer/counter')) / 8 >= 1 && isWorking === true) {
           this.setProperty('/timer/counter', 0);
           return this.setStatusPausingLong();
         }
@@ -35,11 +35,11 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       setStatusPrevious() {
         const { statusName } = this.getData();
 
-        if (statusName === "Short break") {
+        if (statusName === 'Short break') {
           return this.setStatusPausingShort();
         }
 
-        if (statusName === "Long break") {
+        if (statusName === 'Long break') {
           return this.setStatusPausingLong();
         }
 
@@ -120,61 +120,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
         this.setProperty('/timer/msExpired', msExpired);
       },
 
-      addToHistory(task) {
-        if (Config.getProperty('/settings/history/session') === true) {
-          const historyItems = this.getProperty('/history');
-
-          const historyIndex = historyItems.findIndex((historyItem) => {
-            return (
-              historyItem.title == task.title &&
-              historyItem.status.isWorking === task.status.isWorking &&
-              historyItem.status.isPausing === task.status.isPausing
-            );
-          });
-          if (historyIndex >= 0) {
-            historyItems[historyIndex].msExpired += task.msExpired;
-          } else {
-            historyItems.push(task);
-          }
-
-          this.setProperty('/history', historyItems);
-
-          if (Config.getProperty('/settings/history/persistent') === true) {
-            if (!localStorage.getItem('history')) {
-              localStorage.setItem('history', JSON.stringify([]));
-            }
-            localStorage.setItem('history', JSON.stringify(historyItems));
-          }
-        }
-      },
-
-      updateTaskByTaskPath() {
-        const { sPath, ...historyItem } = this.getProperty("/taskEditByUser");
-        this.setProperty(sPath, historyItem);
-
-        if (Config.getProperty('/settings/history/persistent') === true) {
-          const historyItems = this.getProperty("/history")
-          localStorage.setItem('history', JSON.stringify(historyItems))
-        }
-      },
-
-      clearHistory(clearLocalStorage = false) {
-        this.setProperty('/history', []);
-        if (clearLocalStorage === true) {
-          localStorage.setItem('history', JSON.stringify([]));
-        }
-      },
-
-      syncHistory() {
-        const historyItemsLocal = localStorage.getItem('history');
-        if (!!historyItemsLocal && historyItemsLocal !== '[]') {
-          this.setProperty('/history', JSON.parse(historyItemsLocal));
-          return true;
-        } else {
-          return false;
-        }
-      },
-
       playPhaseDoneAudio() {
         const { soundUrl } = Config.getProperty('/settings/notification');
         const audio = new Audio(soundUrl);
@@ -182,9 +127,9 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       },
 
       increaseCounter(value) {
-        let { counter } = this.getProperty("/timer");
+        let { counter } = this.getProperty('/timer');
         counter += value;
-        this.setProperty("/timer/counter", counter)
+        this.setProperty('/timer/counter', counter)
       }
     }
   );
@@ -202,10 +147,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       isWorking: true,
       isPausing: false,
     },
-    task: { title: 'Nothing in particular', desc: '' },
-    taskEditByUser: {},
-    taskEstimation: 0,
-    history: [],
     intervalHandler: null,
   });
 });
