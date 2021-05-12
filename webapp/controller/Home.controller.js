@@ -3,8 +3,9 @@ sap.ui.define([
 	'sap/ui/core/Fragment',
 	'sap/m/MessageToast',
 	"../model/Pomodoro.model",
+	"../model/Config.model",
 	"../model/formatter"
-], function (Controller, Fragment, Toast, Pomodoro, formatter) {
+], function (Controller, Fragment, Toast, Pomodoro, Config, formatter) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.Home", {
@@ -16,6 +17,7 @@ sap.ui.define([
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
 			Pomodoro.syncHistory();
+			Config.tie(this)
 			this.handleSynchronizeUserSettings();
 			this.handleSetUserTheme();
 		},
@@ -202,7 +204,7 @@ sap.ui.define([
 
 		handleSetUserSettings() {
 			try {
-				Pomodoro.saveUserSettings();
+				Config.saveUserSettings();
 				Toast.show("Saved your preferences");
 			} catch (e) {
 				Toast.show(`Could not save changes: ${e}`)
@@ -210,12 +212,12 @@ sap.ui.define([
 		},
 
 		handleResetUserSettings() {
-			Pomodoro.resetUserSettings();
+			Config.resetUserSettings();
 			Toast.show("Restored standard settings. Make sure to save them");
 		},
 
 		handleSynchronizeUserSettings() {
-			const settingsWereSynced = Pomodoro.syncUserSettings()
+			const settingsWereSynced = Config.syncUserSettings()
 			if (settingsWereSynced) {
 				console.log("Loaded user session data from local storage")
 			}
@@ -234,6 +236,7 @@ sap.ui.define([
 			Pomodoro.setProperty('/taskEditByUser/msExpired', msValue)
 
 		},
+
 		_setActiveTaskMsEstimated(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);

@@ -15,27 +15,27 @@
     </f:toolbar>
     <f:content>
       <core:Title text="Pomodoro intervals" />
-      <Label text="Focus interval - {path: 'Pomodoro>/settings/pomodoro/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
-      <Slider step="60000" value="{Pomodoro>/settings/pomodoro/msTotal}" min="0" max="3000000" liveChange="handleSynchronizeMinFocus" class="sapUiTinyMarginBottom" />
+      <Label text="Focus interval - {path: 'Config>/settings/pomodoro/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
+      <Slider step="60000" value="{Config>/settings/pomodoro/msTotal}" min="0" max="3000000" liveChange="handleSynchronizeMinFocus" class="sapUiTinyMarginBottom" />
 
-      <Label text="Short break - {path: 'Pomodoro>/settings/shortBreak/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
-      <Slider step="7500" value="{Pomodoro>/settings/shortBreak/msTotal}" min="0" max="600000" class="sapUiTinyMarginBottom" />
+      <Label text="Short break - {path: 'Config>/settings/shortBreak/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
+      <Slider step="7500" value="{Config>/settings/shortBreak/msTotal}" min="0" max="600000" class="sapUiTinyMarginBottom" />
 
-      <Label text="Long break - {path: 'Pomodoro>/settings/longBreak/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
-      <Slider step="30000" value="{Pomodoro>/settings/longBreak/msTotal}" min="0" max="1500000" class="sapUiTinyMarginBottom" />
+      <Label text="Long break - {path: 'Config>/settings/longBreak/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
+      <Slider step="30000" value="{Config>/settings/longBreak/msTotal}" min="0" max="1500000" class="sapUiTinyMarginBottom" />
 
-      <Label text="Min. focus - {path: 'Pomodoro>/settings/minFocus/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
-      <Slider step="30000" value="{Pomodoro>/settings/minFocus/msTotal}" min="0" max="1500000" liveChange="handleSynchronizeMinFocus" class="sapUiTinyMarginBottom" />
+      <Label text="Min. focus - {path: 'Config>/settings/minFocus/msTotal', formatter: '.formatter.formatMsToMinutes'}" />
+      <Slider step="30000" value="{Config>/settings/minFocus/msTotal}" min="0" max="1500000" liveChange="handleSynchronizeMinFocus" class="sapUiTinyMarginBottom" />
 
       <core:Title text="Preferences" />
       <Label text="Nightshift" />
-      <Switch class="sapUiSmallMarginBottom" tooltip="Switch between normal and dark theme" change="handleToggleUserTheme" state="{=${Pomodoro>/settings/appearance/theme} === 'dark' ? true : false}" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="Switch between normal and dark theme" change="handleToggleUserTheme" state="{=${Config>/settings/appearance/theme} === 'dark' ? true : false}" />
       <Label text="Session log" />
-      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged during this session" state="{Pomodoro>/settings/history/session}" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged during this session" state="{Config>/settings/history/session}" />
       <Label text="Record history" />
-      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged in your browser. These data can be deleted by clicking on 'Delete history data' in the 'History' section" enabled="{Pomodoro>/settings/history/session}" state="{Pomodoro>/settings/history/persistent}" />
+      <Switch class="sapUiSmallMarginBottom" tooltip="If activated, your pomodoro focus will be logged in your browser. These data can be deleted by clicking on 'Delete history data' in the 'History' section" enabled="{Config>/settings/history/session}" state="{Config>/settings/history/persistent}" />
       <Label text="Desktop notifications" />
-      <Switch class="sapUiSmallMarginBottom" state="{Pomodoro>/settings/notification/desktopNotification}" />
+      <Switch class="sapUiSmallMarginBottom" state="{Config>/settings/notification/desktopNotification}" />
 
       <core:Title text="History" />
       <Label text="Export history data" />
