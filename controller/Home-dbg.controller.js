@@ -15,6 +15,7 @@ sap.ui.define([
 			Pomodoro.init();
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
+			Pomodoro.syncHistory();
 			this.handleSynchronizeUserSettings();
 			this.handleSetUserTheme();
 		},
@@ -68,27 +69,30 @@ sap.ui.define([
 			Pomodoro.setStatusPrevious();
 		},
 
-		handleOpenTaskPopover(oEvent) {
-			const oButton = oEvent.getSource();
+		handleOpenTaskDialog() {
 			const oView = this.getView();
-
-			if (!this._taskPopover) {
-				this._taskPopover = Fragment.load({
+			// create dialog lazily
+			if (!this.byId("task-dialog")) {
+				// load asynchronous XML fragment
+				Fragment.load({
 					id: oView.getId(),
 					name: "sap.ui.demo.basicTemplate.view.Fragment.Task",
 					controller: this
-				}).then((oPopover) => {
-					oView.addDependent(oPopover);
-					return oPopover;
+				}).then((oDialog) => {
+					// connect dialog to the root view of this component (models, lifecycle)
+					oView.addDependent(oDialog);
+					oDialog.open();
 				});
+			} else {
+				this.byId("task-dialog").open();
 			}
-			this._taskPopover.then((oPopover) => {
-				oPopover.openBy(oButton);
-			});
 		},
 
-		handleCloseTaskPopover() {
-			this._taskPopover.then(popover => popover.close());
+		handleCloseTaskDialog() {
+			const oDialog = this.byId("task-dialog");
+			if (oDialog) {
+				oDialog.close();
+			}
 		},
 
 		handleOpenHistoryDialog() {
@@ -184,7 +188,7 @@ sap.ui.define([
 
 		handleSynchronizeMinFocus() {
 			const { pomodoro, minFocus } = Pomodoro.getProperty('/settings')
-			if(pomodoro.msTotal < minFocus.msTotal) {
+			if (pomodoro.msTotal < minFocus.msTotal) {
 				Pomodoro.setProperty('/settings/minFocus/msTotal', pomodoro.msTotal);
 			}
 		}
