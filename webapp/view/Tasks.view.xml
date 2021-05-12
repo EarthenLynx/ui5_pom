@@ -22,16 +22,16 @@
     </infoToolbar>
     <columns>
       <Column>
-        <Text text="Phase" />
+        <Text text="Task name" />
       </Column>
       <Column minScreenWidth="Desktop" demandPopin="true">
         <Text text="Description" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Planned" />
+        <Text text="Time estimated" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Duration" />
+        <Text text="Time spent" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Pomodoro Phase" />
@@ -45,9 +45,9 @@
         <cells>
           <ObjectIdentifier text="{Pomodoro>title}"/>
           <Text text="{Pomodoro>desc}" />
-          <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToHours'}  " />
-          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToHours'}  " />
-          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
+          <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToHours'} h" />
+          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToHours'} h" />
+          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'}" />
           <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
         </cells>
       </ColumnListItem>
