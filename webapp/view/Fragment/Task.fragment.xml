@@ -1,8 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<ResponsivePopover title="Focus on the next task at hand" modal="true" class="sapUiContentPadding" placement="Top">
+	<Dialog id="task-dialog" title="Focus on the next task at hand" class="sapUiContentPadding">
 		<endButton>
-			<Button text="Close" press="handleCloseTaskPopover" />
+			<Button text="Close" press="handleCloseTaskDialog" />
 		</endButton>
 		<content>
 
@@ -23,5 +23,5 @@
 
 			<!-- taskEstimation -->
 		</content>
-	</ResponsivePopover>
+	</Dialog>
 </core:FragmentDefinition>
