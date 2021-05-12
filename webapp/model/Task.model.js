@@ -22,8 +22,14 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
             );
           });
           if (historyIndex >= 0) {
+            const endDate = new Date();
             historyItems[historyIndex].msExpired += task.msExpired;
+            historyItems[historyIndex].endDate = endDate;
           } else {
+            const endDate = new Date();
+            const startDate = new Date(endDate - task.msExpired);
+            task.endDate = endDate;
+            task.startDate = startDate;
             historyItems.push(task);
           }
 
