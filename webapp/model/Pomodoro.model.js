@@ -47,9 +47,8 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       setStatusNext() {
         const { isWorking, isPausingShort, isPausingLong } =
           this.getProperty('/status');
-        const { history } = this.getData();
-
-        if ((history.length + 2) % 8 === 0) {
+        if ((this.getProperty("/timer/counter")) / 8 >= 1 && isWorking === true) {
+          this.setProperty('/timer/counter', 0);
           return this.setStatusPausingLong();
         }
 
@@ -173,17 +172,15 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
             historyItems.push(task);
           }
 
+          console.log(historyItems)
+
           this.setProperty('/history', historyItems);
 
           if (this.getProperty('/settings/history/persistent') === true) {
             if (!localStorage.getItem('history')) {
               localStorage.setItem('history', JSON.stringify([]));
             }
-            const historyItemsLocal = JSON.parse(
-              localStorage.getItem('history')
-            );
-            historyItemsLocal.push(task);
-            localStorage.setItem('history', JSON.stringify(historyItemsLocal));
+            localStorage.setItem('history', JSON.stringify(historyItems));
           }
         }
       },
@@ -233,6 +230,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         const audio = new Audio(soundUrl);
         audio.play();
       },
+
+      increaseCounter(value) {
+        let { counter } = this.getProperty("/timer");
+        counter += value;
+        console.log(counter)
+        this.setProperty("/timer/counter", counter)
+      }
     }
   );
 
@@ -242,6 +246,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msLeft: 0,
       msExpired: 0,
       ticking: false,
+      counter: 0
     },
     statusName: 'Working',
     status: {

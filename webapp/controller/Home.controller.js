@@ -42,11 +42,12 @@ sap.ui.define([
 			const { status, taskEstimation } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
 			const { desktopNotification } = Pomodoro.getProperty("/settings/notification")
-			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
+			const { ticking, msExpired, counter } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
 			} else {
 				Pomodoro.stopTicking();
+				Pomodoro.increaseCounter(1);
 				Pomodoro.setStatusNext();
 				if ((msExpired > msMinFocus) || !status.isWorking) {
 					const { task } = Pomodoro.getData();

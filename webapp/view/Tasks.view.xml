@@ -34,7 +34,7 @@
         <Text text="Duration" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Typ" />
+        <Text text="Pomodoro Phase" />
       </Column>
       <Column width="4rem" hAlign="Center">
         <!-- <Text text="" /> -->
