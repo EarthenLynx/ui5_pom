@@ -71,8 +71,7 @@ sap.ui.define([
 		},
 
 		handleUpdateTaskByTaskPath() {
-			const { sPath, ...historyItem } = Pomodoro.getProperty("/taskEditByUser");
-			Pomodoro.setProperty(sPath, historyItem);
+			Pomodoro.updateTaskByTaskPath();
 			this.handleCloseTaskEditDialog()
 		},
 

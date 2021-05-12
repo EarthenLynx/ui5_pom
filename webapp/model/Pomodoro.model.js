@@ -177,6 +177,16 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         }
       },
 
+      updateTaskByTaskPath() {
+        const { sPath, ...historyItem } = this.getProperty("/taskEditByUser");
+        this.setProperty(sPath, historyItem);
+
+        if (this.getProperty('/settings/history/persistent') === true) {
+          const historyItems = this.getProperty("/history")
+          localStorage.setItem('history', JSON.stringify(historyItems))
+        }
+      },
+
       clearHistory(clearLocalStorage = false) {
         this.setProperty('/history', []);
         if (clearLocalStorage === true) {

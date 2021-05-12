@@ -16,7 +16,7 @@ sap.ui.define([], function () {
 			if (ms) {
 				return (ms / (1000 * 60 * 60)).toFixed(2);
 			} else {
-				return "00:00";
+				return "0.00";
 			}
 		},
 
