@@ -10,7 +10,7 @@
 				<Label text="What are you focusing on?"></Label>
 				<Input placeholder="What are you focusing on?" value="{Pomodoro>/task/title}" showSuggestion="true" suggestionItems="{Pomodoro>/history}">
 					<suggestionItems>
-						<core:Item text="{Pomodoro>title}" />
+						<core:Item text="{Pomodoro>title}" additionalText="{path: 'SupplierName', formatter: .}"/>
 					</suggestionItems>
 				</Input>
 
