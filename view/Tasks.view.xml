@@ -3,7 +3,7 @@
   xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core">
-  <Table inset="false" items="{Pomodoro>/history}">
+  <Table inset="false" items="{Pomodoro>/history}" alternateRowColors="true" backgroundDesign="solid">
     <headerToolbar>
       <OverflowToolbar>
         <content>
@@ -22,29 +22,33 @@
     </infoToolbar>
     <columns>
       <Column>
-        <Text text="Phase" />
+        <Text text="Task name" />
       </Column>
       <Column minScreenWidth="Desktop" demandPopin="true">
         <Text text="Description" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Planned" />
+        <Text text="Time estimated" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Duration" />
+        <Text text="Time spent" />
       </Column>
       <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Typ" />
+        <Text text="Pomodoro Phase" />
+      </Column>
+      <Column width="4rem" hAlign="Center">
+        <!-- <Text text="" /> -->
       </Column>
     </columns>
     <items>
       <ColumnListItem>
         <cells>
-          <ObjectIdentifier  text="{Pomodoro>title}"/>
+          <ObjectIdentifier text="{Pomodoro>title}"/>
           <Text text="{Pomodoro>desc}" />
-            <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToMinutes'}  " />
-          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToMinutes'}  " />
-          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'} " />
+          <Text text="{path: 'Pomodoro>msEstimated', formatter: '.formatter.formatMsToHours'} h" />
+          <Text text="{path: 'Pomodoro>msExpired', formatter: '.formatter.formatMsToHours'} h" />
+          <Text text="{path: 'Pomodoro>status', formatter: '.formatter.formatStatusToString'}" />
+          <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
         </cells>
       </ColumnListItem>
     </items>

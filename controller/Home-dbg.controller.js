@@ -42,11 +42,12 @@ sap.ui.define([
 			const { status, taskEstimation } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Pomodoro.getProperty('/settings/minFocus')
 			const { desktopNotification } = Pomodoro.getProperty("/settings/notification")
-			const { ticking, msExpired } = Pomodoro.getProperty('/timer')
+			const { ticking, msExpired, counter } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
 			} else {
 				Pomodoro.stopTicking();
+				Pomodoro.increaseCounter(1);
 				Pomodoro.setStatusNext();
 				if ((msExpired > msMinFocus) || !status.isWorking) {
 					const { task } = Pomodoro.getData();
@@ -67,6 +68,11 @@ sap.ui.define([
 		handleResetCurrentPhase() {
 			Pomodoro.stopTicking();
 			Pomodoro.setStatusPrevious();
+		},
+
+		handleUpdateTaskByTaskPath() {
+			Pomodoro.updateTaskByTaskPath();
+			this.handleCloseTaskEditDialog()
 		},
 
 		handleOpenTaskDialog() {
@@ -116,6 +122,35 @@ sap.ui.define([
 
 		handleCloseHistoryDialog() {
 			const oDialog = this.byId("history-dialog");
+			if (oDialog) {
+				oDialog.close();
+			}
+		},
+
+		handleOpenTaskEditDialog(oEvent) {
+			const sPath = oEvent.getSource().getBindingContext('Pomodoro').getPath();
+			const oHistoryItem = Pomodoro.getProperty(sPath);
+			oHistoryItem.sPath = sPath;
+			Pomodoro.setProperty('/taskEditByUser', oHistoryItem);
+
+			const oView = this.getView();
+
+			if (!this.byId('task-edit-dialog')) {
+				this._taskEditDialog = Fragment.load({
+					id: oView.getId(),
+					name: "sap.ui.demo.basicTemplate.view.Fragment.TaskEdit",
+					controller: this
+				}).then((oDialog) => {
+					oView.addDependent(oDialog);
+					oDialog.open();
+				});
+			} else {
+				this.byId('task-edit-dialog').open();
+			}
+		},
+
+		handleCloseTaskEditDialog() {
+			const oDialog = this.byId("task-edit-dialog");
 			if (oDialog) {
 				oDialog.close();
 			}
@@ -191,6 +226,18 @@ sap.ui.define([
 			if (pomodoro.msTotal < minFocus.msTotal) {
 				Pomodoro.setProperty('/settings/minFocus/msTotal', pomodoro.msTotal);
 			}
-		}
+		},
+
+		_setActiveTaskMsExpired(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Pomodoro.setProperty('/taskEditByUser/msExpired', msValue)
+
+		},
+		_setActiveTaskMsEstimated(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Pomodoro.setProperty('/taskEditByUser/msEstimated', msValue)
+		},
 	});
 });

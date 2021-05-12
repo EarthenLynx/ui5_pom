@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="task-edit-dialog" title="Edit a task" class="sapUiContentPadding">
+    <beginButton>
+      <Button icon="sap-icon://save" text="Save" press="handleUpdateTaskByTaskPath" />
+    </beginButton>
+    <endButton>
+      <Button text="Close" press="handleCloseTaskEditDialog" />
+    </endButton>
+    <content>
+
+      <Label text="Edit task title"></Label>
+      <Input placeholder="Edit task title" value="{Pomodoro>/taskEditByUser/title}" showSuggestion="true" />
+
+      <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+        <VBox class="sapUiSmallMarginEnd">
+          <Label text="Time estimated"></Label>
+          <StepInput change="_setActiveTaskMsEstimated" value="{path: 'Pomodoro>/taskEditByUser/msEstimated', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+        </VBox>
+        <VBox class="sapUiSmallMarginStart">
+          <Label text="Edit time spent"></Label>
+          <StepInput change="_setActiveTaskMsExpired" value="{path: 'Pomodoro>/taskEditByUser/msExpired', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+        </VBox>
+      </HBox>
+
+      <Label text="Edit comment"></Label>
+      <TextArea placeholder="Add a comment" value="{Pomodoro>/taskEditByUser/desc}" width="100%"/>
+
+
+      <!-- taskEstimation -->
+    </content>
+  </Dialog>
+</core:FragmentDefinition>

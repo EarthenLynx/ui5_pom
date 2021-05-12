@@ -7,7 +7,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msTotal: 1500000,
     },
     shortBreak: {
-      name: 'Short Break',
+      name: 'Short break',
       msTotal: 300000,
     },
     longBreak: {
@@ -45,11 +45,10 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       },
 
       setStatusNext() {
-        const { isWorking, isPausingShort, isPausingLong } =
+        const { isWorking, isPausing } =
           this.getProperty('/status');
-        const { history } = this.getData();
-
-        if ((history.length + 2) % 8 === 0) {
+        if ((this.getProperty("/timer/counter")) / 8 >= 1 && isWorking === true) {
+          this.setProperty('/timer/counter', 0);
           return this.setStatusPausingLong();
         }
 
@@ -57,25 +56,23 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
           return this.setStatusPausingShort();
         }
 
-        if (isPausingShort || isPausingLong) {
+        if (isPausing) {
           return this.setStatusWorking();
         }
       },
 
       setStatusPrevious() {
-        const { isWorking, isPausingShort, isPausingLong } =
-          this.getProperty('/status');
-        if (isPausingLong) {
-          return this.setStatusPausingLong();
-        }
+        const { statusName } = this.getData();
 
-        if (isPausingShort) {
+        if (statusName === "Short break") {
           return this.setStatusPausingShort();
         }
 
-        if (isWorking) {
-          return this.setStatusWorking();
+        if (statusName === "Long break") {
+          return this.setStatusPausingLong();
         }
+
+        return this.setStatusWorking();
       },
 
       setTimer(ms) {
@@ -89,8 +86,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         const { msTotal, name } = this.getProperty('/settings/pomodoro');
         this.setProperty('/status', {
           isWorking: true,
-          isPausingShort: false,
-          isPausingLong: false,
+          isPausing: false,
         });
         this.setProperty('/statusName', name);
         this.setTimer(msTotal);
@@ -99,8 +95,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         const { msTotal, name } = this.getProperty('/settings/shortBreak');
         this.setProperty('/status', {
           isWorking: false,
-          isPausingShort: true,
-          isPausingLong: false,
+          isPausing: true,
         });
         this.setProperty('/statusName', name);
         this.setTimer(msTotal);
@@ -109,8 +104,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         const { msTotal, name } = this.getProperty('/settings/longBreak');
         this.setProperty('/status', {
           isWorking: false,
-          isPausingShort: true,
-          isPausingLong: false,
+          isPausing: true,
         });
         this.setProperty('/statusName', name);
         this.setTimer(msTotal);
@@ -163,8 +157,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
             return (
               historyItem.title == task.title &&
               historyItem.status.isWorking === task.status.isWorking &&
-              historyItem.status.isPausingShort === task.status.isPausingShort &&
-              historyItem.status.isPausingLong === task.status.isPausingLong
+              historyItem.status.isPausing === task.status.isPausing
             );
           });
           if (historyIndex >= 0) {
@@ -179,12 +172,18 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
             if (!localStorage.getItem('history')) {
               localStorage.setItem('history', JSON.stringify([]));
             }
-            const historyItemsLocal = JSON.parse(
-              localStorage.getItem('history')
-            );
-            historyItemsLocal.push(task);
-            localStorage.setItem('history', JSON.stringify(historyItemsLocal));
+            localStorage.setItem('history', JSON.stringify(historyItems));
           }
+        }
+      },
+
+      updateTaskByTaskPath() {
+        const { sPath, ...historyItem } = this.getProperty("/taskEditByUser");
+        this.setProperty(sPath, historyItem);
+
+        if (this.getProperty('/settings/history/persistent') === true) {
+          const historyItems = this.getProperty("/history")
+          localStorage.setItem('history', JSON.stringify(historyItems))
         }
       },
 
@@ -233,6 +232,12 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
         const audio = new Audio(soundUrl);
         audio.play();
       },
+
+      increaseCounter(value) {
+        let { counter } = this.getProperty("/timer");
+        counter += value;
+        this.setProperty("/timer/counter", counter)
+      }
     }
   );
 
@@ -242,15 +247,16 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       msLeft: 0,
       msExpired: 0,
       ticking: false,
+      counter: 0
     },
     statusName: 'Working',
     status: {
       isWorking: true,
-      isPausingShort: false,
-      isPausingLong: false,
+      isPausing: false,
     },
     settings: { ...pomodoroDefaultSettings },
     task: { title: 'Nothing in particular', desc: '' },
+    taskEditByUser: {},
     taskEstimation: 0,
     history: [],
     intervalHandler: null,
