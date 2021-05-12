@@ -64,8 +64,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       setStatusPrevious() {
         const { statusName } = this.getData();
 
-        console.log(statusName)
-
         if (statusName === "Short break") {
           return this.setStatusPausingShort();
         }
@@ -168,8 +166,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
             historyItems.push(task);
           }
 
-          console.log(historyItems)
-
           this.setProperty('/history', historyItems);
 
           if (this.getProperty('/settings/history/persistent') === true) {
@@ -230,7 +226,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
       increaseCounter(value) {
         let { counter } = this.getProperty("/timer");
         counter += value;
-        console.log(counter)
         this.setProperty("/timer/counter", counter)
       }
     }
