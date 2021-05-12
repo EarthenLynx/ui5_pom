@@ -8,6 +8,14 @@ sap.ui.define([], function () {
 				return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 
 			} else {
+				return "0:00";
+			}
+		},
+
+		formatMsToHours(ms) {
+			if (ms) {
+				return (ms / (1000 * 60 * 60)).toFixed(2);
+			} else {
 				return "00:00";
 			}
 		},

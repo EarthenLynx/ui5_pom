@@ -251,6 +251,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     },
     settings: { ...pomodoroDefaultSettings },
     task: { title: 'Nothing in particular', desc: '' },
+    taskEditByUser: {},
     taskEstimation: 0,
     history: [],
     intervalHandler: null,
