@@ -13,7 +13,7 @@
       <!-- <SinglePlanningCalendarMonthView key="MonthView" title="Month" /> -->
     </views>
     <appointments>
-      <unified:CalendarAppointment title= "{Task>title}" text= "{Task>desc}" startDate= "{path: 'Task>startDate', formatter: '.formatter.formatStringToDate'}" endDate= "{path: 'Task>endDate', formatter: '.formatter.formatStringToDate'}">
+      <unified:CalendarAppointment title= "{Task>title}" text= "{Task>desc}" color="{=${Task>status/isWorking} ? '#1866b4' : '#2a6d3c'}" startDate= "{path: 'Task>startDate', formatter: '.formatter.formatStringToDate'}" endDate= "{path: 'Task>endDate', formatter: '.formatter.formatStringToDate'}">
       </unified:CalendarAppointment>
     </appointments>
   </SinglePlanningCalendar>
