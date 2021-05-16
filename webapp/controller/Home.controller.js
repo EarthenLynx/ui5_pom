@@ -4,8 +4,8 @@ sap.ui.define([
 	'sap/m/MessageToast',
 	'../model/Pomodoro.model',
 	'../model/Task.model',
-	'../model/Config.model',
-	'../model/formatter'
+		'../model/Config.model',
+		'../model/formatter'
 ], function (Controller, Fragment, Toast, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
@@ -18,9 +18,7 @@ sap.ui.define([
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
 			Task.syncHistory();
-			Config.tie(this)
 			Task.tie(this);
-			this.handleSynchronizeUserSettings();
 			this.handleSetUserTheme();
 		},
 
@@ -117,32 +115,6 @@ sap.ui.define([
 			}
 		},
 
-		handleOpenHistoryDialog() {
-			const oView = this.getView();
-			// create dialog lazily
-			if (!this.byId('history-dialog')) {
-				// load asynchronous XML fragment
-				Fragment.load({
-					id: oView.getId(),
-					name: 'sap.ui.demo.basicTemplate.view.Fragment.History',
-					controller: this
-				}).then((oDialog) => {
-					// connect dialog to the root view of this component (models, lifecycle)
-					oView.addDependent(oDialog);
-					oDialog.open();
-				});
-			} else {
-				this.byId('history-dialog').open();
-			}
-		},
-
-		handleCloseHistoryDialog() {
-			const oDialog = this.byId('history-dialog');
-			if (oDialog) {
-				oDialog.close();
-			}
-		},
-
 		handleOpenTaskEditDialog(oEvent) {
 			const sPath = oEvent.getSource().getBindingContext('Task').getPath();
 			const oHistoryItem = Task.getProperty(sPath);
@@ -181,74 +153,10 @@ sap.ui.define([
 			}
 		},
 
-		handleDeleteHistory(clearLocalStorage = false) {
-			if (clearLocalStorage === true) {
-				Toast.show('All historical data has been removed from your computer')
-			}
-
-			if (clearLocalStorage === false) {
-				Toast.show('Session data cleared')
-			}
-
-			this.handleCloseHistoryDialog();
-			Task.clearHistory(clearLocalStorage);
-		},
-
-		handleExportHistory() {
-			const { history } = Task.getData();
-			const rowHeaders = Object.keys(history[0])
-			const replacer = (key, value) => { return value === null ? '' : value }
-			let csv = history.map((row) => {
-				return rowHeaders.map((fieldName) => {
-					return JSON.stringify(row[fieldName], replacer)
-				}).join(';')
-			})
-
-			csv.unshift(rowHeaders.join(';')) // add header column
-			csv = csv.join('\r\n');
-
-			const csvFile = new Blob([csv]);
-			const a = document.createElement('a');
-			a.href = URL.createObjectURL(csvFile);
-			a.download = 'filename.csv';
-			document.body.appendChild(a);
-			a.click();
-			document.body.removeChild(a);
-		},
-
-		handleSetUserSettings() {
-			try {
-				Config.saveUserSettings();
-				Toast.show('Saved your preferences');
-			} catch (e) {
-				Toast.show(`Could not save changes: ${e}`)
-			}
-		},
-
-		handleResetUserSettings() {
-			Config.resetUserSettings();
-			Toast.show('Restored standard settings. Make sure to save them');
-		},
-
-		handleSynchronizeUserSettings() {
-			const settingsWereSynced = Config.syncUserSettings()
-			if (settingsWereSynced) {
-				console.log('Loaded user session data from local storage')
-			}
-		},
-
-		handleSynchronizeMinFocus() {
-			const { pomodoro, minFocus } = Config.getProperty('/settings')
-			if (pomodoro.msTotal < minFocus.msTotal) {
-				Config.setProperty('/settings/minFocus/msTotal', pomodoro.msTotal);
-			}
-		},
-
 		_setActiveTaskMsExpired(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msExpired', msValue)
-
 		},
 
 		_setActiveTaskMsEstimated(oEvent) {

@@ -15,7 +15,7 @@
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Calender" async="true" />
 					</IconTabFilter>
 					<IconTabFilter design="Vertical" icon="sap-icon://action-settings" text="Settings">
-						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="true" />
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="false" />
 					</IconTabFilter>
 				</items>
 			</IconTabBar>

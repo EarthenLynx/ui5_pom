@@ -1,4 +1,4 @@
-<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Settings" displayBlock="true"
   xmlns="sap.m"
   xmlns:l="sap.ui.layout"
   xmlns:f="sap.ui.layout.form"
