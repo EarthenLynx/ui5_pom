@@ -74,6 +74,18 @@ sap.ui.define([
 			Pomodoro.setStatusPrevious();
 		},
 
+		handleCreateNewTask() {
+			const { task, taskEstimation } = Task.getData();
+			task.status = {
+				isWorking: true,
+				isPausing: false
+			}
+			task.msExpired = 0;
+			task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
+			Task.addToHistory({ ...task });
+			Toast.show('Task added to history');
+		},
+
 		handleUpdateTaskByTaskPath() {
 			Task.updateTaskByTaskPath();
 			this.handleCloseTaskEditDialog()
