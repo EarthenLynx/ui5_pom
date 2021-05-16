@@ -4,8 +4,8 @@ sap.ui.define([
 	'sap/m/MessageToast',
 	'../model/Pomodoro.model',
 	'../model/Task.model',
-		'../model/Config.model',
-		'../model/formatter'
+	'../model/Config.model',
+	'../model/formatter'
 ], function (Controller, Fragment, Toast, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
@@ -116,7 +116,17 @@ sap.ui.define([
 		},
 
 		handleOpenTaskEditDialog(oEvent) {
-			const sPath = oEvent.getSource().getBindingContext('Task').getPath();
+			const oSource = oEvent.getSource();
+
+			// Conditionally find the selected path
+			let sPath;
+			console.log(oSource)
+			if (oSource.getSelectedAppointments) {
+				console.log(oSource.getSelectedAppointments())
+				sPath = oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath();
+			} else {
+				sPath = oSource.getBindingContext('Task').getPath();
+			}
 			const oHistoryItem = Task.getProperty(sPath);
 			oHistoryItem.sPath = sPath;
 			Task.setProperty('/taskEditByUser', oHistoryItem);
