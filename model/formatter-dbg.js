@@ -30,6 +30,22 @@ sap.ui.define([], function () {
 			}
 		},
 
+		formatStringToDate(string) {
+			if(string) {
+				return new Date(string)
+			} else {
+				return new Date();
+			}
+		},
+
+		formatStringToNumber(string) {
+			if(string) {
+				return parseInt(string)
+			} else {
+				return 0
+			}
+		},
+
 		formatUniqueHistory(array) {
 			if (array) {
 				return array.map(item => item.title)

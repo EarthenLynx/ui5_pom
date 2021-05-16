@@ -1,0 +1,20 @@
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+  xmlns="sap.m"
+  xmlns:l="sap.ui.layout"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:unified="sap.ui.unified"
+  xmlns:core="sap.ui.core">
+
+  <SinglePlanningCalendar appointmentSelect="handleOpenTaskEditDialog" fullDay="false" startHour="{path: 'Config>/settings/history/calenderStartHour', formatter: '.formatter.formatStringToNumber'}" endHour="{path: 'Config>/settings/history/calenderEndHour', formatter: '.formatter.formatStringToNumber'}" title= "Pomodoro Calender" appointments="{path: 'Task>/history/'}">
+    <views>
+      <SinglePlanningCalendarDayView key="DayView" title="Daily overview" />
+      <!-- <SinglePlanningCalendarWorkWeekView key="WorkWeekView" title="Work Week" /> -->
+      <SinglePlanningCalendarWeekView key="WeekView" title="Weekly overview" />
+      <!-- <SinglePlanningCalendarMonthView key="MonthView" title="Month" /> -->
+    </views>
+    <appointments>
+      <unified:CalendarAppointment title= "{Task>title}" text= "{Task>desc}" color="{=${Task>status/isWorking} ? '#1866b4' : '#2a6d3c'}" startDate= "{path: 'Task>startDate', formatter: '.formatter.formatStringToDate'}" endDate= "{path: 'Task>endDate', formatter: '.formatter.formatStringToDate'}">
+      </unified:CalendarAppointment>
+    </appointments>
+  </SinglePlanningCalendar>
+</mvc:View>

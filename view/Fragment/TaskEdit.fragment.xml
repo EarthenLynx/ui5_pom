@@ -10,23 +10,33 @@
     <content>
 
       <Label text="Edit task title"></Label>
-      <Input placeholder="Edit task title" value="{Pomodoro>/taskEditByUser/title}" showSuggestion="true" />
+      <Input placeholder="Edit task title" value="{Task>/taskEditByUser/title}" showSuggestion="true" />
 
       <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
         <VBox class="sapUiSmallMarginEnd">
-          <Label text="Time estimated"></Label>
-          <StepInput change="_setActiveTaskMsEstimated" value="{path: 'Pomodoro>/taskEditByUser/msEstimated', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+          <Label text="Edit time estimated"></Label>
+          <StepInput placeholder="Edit time estimated" change="_setActiveTaskMsEstimated" value="{path: 'Task>/taskEditByUser/msEstimated', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
         </VBox>
         <VBox class="sapUiSmallMarginStart">
           <Label text="Edit time spent"></Label>
-          <StepInput change="_setActiveTaskMsExpired" value="{path: 'Pomodoro>/taskEditByUser/msExpired', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+          <StepInput placeholder="Edit time spent" change="_setActiveTaskMsExpired" value="{path: 'Task>/taskEditByUser/msExpired', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
         </VBox>
       </HBox>
 
       <Label text="Edit comment"></Label>
-      <TextArea placeholder="Add a comment" value="{Pomodoro>/taskEditByUser/desc}" width="100%"/>
+      <TextArea placeholder="Add a comment" value="{Task>/taskEditByUser/desc}" width="100%"/>
 
 
+      <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+        <VBox width="100%" class="sapUiSmallMarginEnd">
+          <Label text="Edit start date"></Label>
+          <DateTimePicker width="100%" value="{Task>/taskEditByUser/startDate}" class="sapUiSmallMarginBottom"/>
+        </VBox>
+        <VBox width="100%" class="sapUiSmallMarginStart">
+          <Label text="Edit end date"></Label>
+          <DateTimePicker width="100%" value="{Task>/taskEditByUser/endDate}" class="sapUiSmallMarginBottom"/>
+        </VBox>
+      </HBox>
       <!-- taskEstimation -->
     </content>
   </Dialog>

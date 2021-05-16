@@ -1,18 +1,21 @@
 <mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc">
-	<Page id="page" title="Pomodoro">
+	<Page id="page" title="Pomodoro Assistant">
 		<content>
-			<IconTabBar applyContentPadding="false" stretchContentHeight="true" backgroundDesign="Transparent">
+			<IconTabBar applyContentPadding="false" stretchContentHeight="true">
 				<items>
 					<IconTabFilter design="Vertical" icon="sap-icon://fob-watch" text="Timer">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Pomodoro" async="true" />
 					</IconTabFilter>
-					<IconTabFilter count="{= ${Pomodoro>/history}.length }" design="Vertical" icon="sap-icon://activity-individual" text="Tasks">
+					<IconTabFilter visible="{Config>/settings/history/session}" count="{= ${Task>/history}.length }" design="Vertical" icon="sap-icon://activity-individual" text="Tasks">
 						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Tasks" async="true" />
 					</IconTabFilter>
+					<IconTabFilter visible="{Config>/settings/history/session}" design="Vertical" icon="sap-icon://date-time" text="History">
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Calender" async="true" />
+					</IconTabFilter>
 					<IconTabFilter design="Vertical" icon="sap-icon://action-settings" text="Settings">
-						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="true" />
+						<mvc:XMLView viewName="sap.ui.demo.basicTemplate.view.Settings" async="false" />
 					</IconTabFilter>
 				</items>
 			</IconTabBar>
