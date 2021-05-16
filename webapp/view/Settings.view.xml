@@ -39,11 +39,11 @@
 
       <core:Title text="Working Hours and History" />
 
-      <Label text="Calender from" />
-      <TimePicker width="4rem" value="{Config>/settings/history/calenderStartHour}" valueFormat="HH" displayFormat="HH"/>
+      <Label text="Working from" />
+      <TimePicker tooltip="Select from what time you would like to view your pomodoros in the calender widget" width="4rem" value="{Config>/settings/history/calenderStartHour}" valueFormat="HH" displayFormat="HH"/>
 
-      <Label text="Calender to" />
-      <TimePicker width="4rem" value="{Config>/settings/history/calenderEndHour}" valueFormat="HH" displayFormat="HH"/>
+      <Label text="Working to" />
+      <TimePicker tooltip="Select to what time you would like to view your pomodoros in the calender widget" width="4rem" value="{Config>/settings/history/calenderEndHour}" valueFormat="HH" displayFormat="HH"/>
 
       <Label text="Export history data" />
       <Button width="2rem" icon="sap-icon://download" tooltip="Export history data as .csv" press="handleExportHistory" />
