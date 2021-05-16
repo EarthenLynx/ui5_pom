@@ -81,7 +81,8 @@ sap.ui.define([
 			task.msExpired = 0;
 			task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
 			Task.addToHistory({ ...task });
-			Toast.show('Task added to history');
+			Toast.show('Task added to tasklist.');
+			this.handleCloseTaskDialog();
 		},
 
 		handleUpdateTaskByTaskPath() {
