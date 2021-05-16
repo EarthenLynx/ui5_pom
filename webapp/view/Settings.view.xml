@@ -37,7 +37,14 @@
       <Label text="Desktop notifications" />
       <Switch class="sapUiSmallMarginBottom" state="{Config>/settings/notification/desktopNotification}" />
 
-      <core:Title text="History" />
+      <core:Title text="History and calender" />
+
+      <Label text="Calender from" />
+      <TimePicker width="4rem" value="{Config>/settings/history/calenderStartHour}" valueFormat="HH" displayFormat="HH"/>
+
+      <Label text="Calender to" />
+      <TimePicker width="4rem" value="{Config>/settings/history/calenderEndHour}" valueFormat="HH" displayFormat="HH"/>
+
       <Label text="Export history data" />
       <Button width="2rem" icon="sap-icon://download" tooltip="Export history data as .csv" press="handleExportHistory" />
 

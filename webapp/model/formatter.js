@@ -38,6 +38,14 @@ sap.ui.define([], function () {
 			}
 		},
 
+		formatStringToNumber(string) {
+			if(string) {
+				return parseInt(string)
+			} else {
+				return 0
+			}
+		},
+
 		formatUniqueHistory(array) {
 			if (array) {
 				return array.map(item => item.title)
