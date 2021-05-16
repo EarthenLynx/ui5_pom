@@ -7,9 +7,9 @@
 
   <SinglePlanningCalendar appointmentSelect="handleOpenTaskEditDialog" fullDay="false" startHour="{path: 'Config>/settings/history/calenderStartHour', formatter: '.formatter.formatStringToNumber'}" endHour="{path: 'Config>/settings/history/calenderEndHour', formatter: '.formatter.formatStringToNumber'}" title= "Pomodoro Calender" appointments="{path: 'Task>/history/'}">
     <views>
-      <SinglePlanningCalendarDayView key="DayView" title="Day" />
+      <SinglePlanningCalendarDayView key="DayView" title="Daily overview" />
       <!-- <SinglePlanningCalendarWorkWeekView key="WorkWeekView" title="Work Week" /> -->
-      <SinglePlanningCalendarWeekView key="WeekView" title="Week" />
+      <SinglePlanningCalendarWeekView key="WeekView" title="Weekly overview" />
       <!-- <SinglePlanningCalendarMonthView key="MonthView" title="Month" /> -->
     </views>
     <appointments>

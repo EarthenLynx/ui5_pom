@@ -9,7 +9,7 @@
         <content>
           <Title text="Tasklist" level="H2"/>
           <ToolbarSpacer />
-          <!--  -->
+          <!-- TODO: Add a filter for only today's items here -->
           <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
           <Button icon="sap-icon://eraser" tooltip="This will only delete tasks from your current session. To delete history data, go to 'Settings'" press="handleDeleteHistory" />
         </content>
@@ -27,17 +27,17 @@
       <Column minScreenWidth="Desktop" demandPopin="true">
         <Text text="Description" />
       </Column>
-      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="5rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time estimated" />
       </Column>
-      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="5rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time spent" />
       </Column>
-      <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="7rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Pomodoro Phase" />
       </Column>
       <Column width="4rem" hAlign="Center">
-        <!-- <Text text="" /> -->
+        <!-- Empty column for edit button -->
       </Column>
     </columns>
     <items>
