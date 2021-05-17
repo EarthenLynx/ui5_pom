@@ -2,11 +2,12 @@ sap.ui.define([
 	'./Basecontroller',
 	'sap/ui/core/Fragment',
 	'sap/m/MessageToast',
+	'sap/ui/model/Sorter',
 	'../model/Pomodoro.model',
 	'../model/Task.model',
 	'../model/Config.model',
 	'../model/formatter'
-], function (Controller, Fragment, Toast, Pomodoro, Task, Config, formatter) {
+], function (Controller, Fragment, Toast, Sorter, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
 	return Controller.extend('sap.ui.demo.basicTemplate.controller.Home', {
@@ -162,6 +163,23 @@ sap.ui.define([
 			} else {
 				Toast.show('No history data found')
 			}
+		},
+
+		_groupByDay(oContext){
+			const sDate = oContext.getProperty("startDate");
+
+			return {
+				key : formatter.formatStringToDateDay(sDate),
+				text : formatter.formatStringToDateDay(sDate)
+			};
+		},
+
+		handleApplySorterAndFilter() {
+			const aSorters = [];
+
+			aSorters.push(new Sorter('startDate', true, this._groupByDay))
+
+			this.byId('task-table').getBinding('items').sort(aSorters)
 		},
 
 		_setActiveTaskMsExpired(oEvent) {
