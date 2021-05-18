@@ -3,11 +3,13 @@ sap.ui.define([
 	'sap/ui/core/Fragment',
 	'sap/m/MessageToast',
 	'sap/ui/model/Sorter',
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
 	'../model/Pomodoro.model',
 	'../model/Task.model',
 	'../model/Config.model',
 	'../model/formatter'
-], function (Controller, Fragment, Toast, Sorter, Pomodoro, Task, Config, formatter) {
+], function (Controller, Fragment, Toast, Sorter, Filter, FilterOperator, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
 	return Controller.extend('sap.ui.demo.basicTemplate.controller.Home', {
@@ -21,6 +23,7 @@ sap.ui.define([
 			Task.syncHistory();
 			Task.tie(this);
 			this.handleSetUserTheme();
+			this.handleApplyToggleFilterTaskList()
 		},
 
 		handleToggleTimer() {
@@ -165,16 +168,33 @@ sap.ui.define([
 			}
 		},
 
-		_groupByDay(oContext){
-			const sDate = oContext.getProperty("startDate");
+		/* Sorting & Filter functions */
+		handleApplySearchTaskList(oEvent) {
+			const aTableFilters = []
+			const sQuery = oEvent.getParameter("query");
 
-			return {
-				key : formatter.formatStringToDateDay(sDate),
-				text : formatter.formatStringToDateDay(sDate)
-			};
+			if (sQuery && sQuery.length > 0) {
+				const titleFilter = new Filter({ path: "title", operator: FilterOperator.Contains, value1: sQuery })
+				const descFilter = new Filter({ path: "desc", operator: FilterOperator.Contains, value1: sQuery })
+				aTableFilters.push(new Filter({ filters: [titleFilter, descFilter], and: false }));
+			}
+
+			this.byId("task-table").getBinding("items").filter(aTableFilters, "Application");
 		},
 
-		handleApplySorterAndFilter() {
+		handleApplyToggleFilterTaskList() {
+			const aTableFilters = []
+			const { showBreaks } = Config.getProperty('/settings/history');
+
+			if (showBreaks) {
+				const workFilter = new Filter({ path: 'status/isWorking', operator: FilterOperator.EQ, value1: showBreaks })
+				aTableFilters.push(workFilter);
+			}
+			this.byId("task-table").getBinding('items').filter(aTableFilters, "Application")
+			Config.setProperty('/settings/history/showBreaks', !showBreaks)
+		},
+
+		handleApplyDateSorter() {
 			const aSorters = [];
 
 			aSorters.push(new Sorter('startDate', true, this._groupByDay))
@@ -192,6 +212,14 @@ sap.ui.define([
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msEstimated', msValue)
+		},
+		_groupByDay(oContext) {
+			const sDate = oContext.getProperty("startDate");
+
+			return {
+				key: formatter.formatStringToDateDay(sDate),
+				text: formatter.formatStringToDateDay(sDate)
+			};
 		},
 	});
 });

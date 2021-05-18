@@ -8,12 +8,14 @@
       <OverflowToolbar>
         <content>
           <Title text="Tasklist" level="H2"/>
-          <ToolbarSpacer />
-          <!-- handleApplySorterAndFilter -->
+          <ToolbarSpacer/>
+          <SearchField search="handleApplySearchTaskList" width="15rem"/>
+          <!-- handleApplyDateSorter -->
           <!-- TODO: Add a filter for only today's items here -->
-          <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplySorterAndFilter" />
+          <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplyDateSorter" />
           <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
           <Button icon="sap-icon://eraser" tooltip="This will only delete tasks from your current session. To delete history data, go to 'Settings'" press="handleDeleteHistory" />
+          <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTaskList" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
