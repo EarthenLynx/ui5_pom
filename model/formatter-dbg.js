@@ -30,9 +30,21 @@ sap.ui.define([], function () {
 			}
 		},
 
-		formatStringToDate(string) {
+		formatStringToDateTime(string) {
 			if(string) {
 				return new Date(string)
+			} else {
+				return new Date();
+			}
+		},
+
+		formatStringToDateDay(string) {
+			if(string) {
+				const d = new Date(string)
+				const day = d.getDate()
+				const month = (d.getMonth() + 1) < 10 ? '0' + (d.getMonth() + 1) :  d.getMonth();
+				const year = d.getFullYear()
+				return `${day}.${month}.${year}`
 			} else {
 				return new Date();
 			}

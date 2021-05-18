@@ -2,10 +2,10 @@
 	xmlns:core="sap.ui.core">
 	<Dialog id="task-dialog" title="Focus on the next task at hand" class="sapUiContentPadding">
 		<beginButton>
-			<Button text="Create new task" press="handleCreateNewTask" />
+			<Button enabled="{Config>/settings/history/session}" text="Create task" tooltip="Add this task to your tasklist. Only possible if you have 'Record session' set to active in your settings" press="handleCreateNewTask" />
 		</beginButton>
 		<endButton>
-			<Button text="Close" press="handleCloseTaskDialog" />
+			<Button type="Accept" text="Set active task" tooltip="Set this task as your current focus. If 'Record session' is active, your working time and breaks will automatically be added to the currently active task" press="handleCloseTaskDialog" />
 		</endButton>
 		<content>
 
