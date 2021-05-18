@@ -7,15 +7,13 @@
     <headerToolbar>
       <OverflowToolbar>
         <content>
-          <Title text="Tasklist" level="H2"/>
-          <ToolbarSpacer/>
           <SearchField search="handleApplySearchTaskList" width="15rem"/>
           <!-- handleApplyDateSorter -->
+          <ToolbarSpacer/>
           <!-- TODO: Add a filter for only today's items here -->
           <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplyDateSorter" />
           <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
-          <Button icon="sap-icon://eraser" tooltip="This will only delete tasks from your current session. To delete history data, go to 'Settings'" press="handleDeleteHistory" />
-          <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTaskList" />
+          <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTasks" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
@@ -31,13 +29,13 @@
       <Column minScreenWidth="Desktop" demandPopin="true">
         <Text text="Description" />
       </Column>
-      <Column width="5rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time estimated" />
       </Column>
-      <Column width="5rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time spent" />
       </Column>
-      <Column width="7rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+      <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Pomodoro Phase" />
       </Column>
       <Column width="4rem" hAlign="Center">

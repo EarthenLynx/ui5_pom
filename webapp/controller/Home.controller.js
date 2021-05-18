@@ -23,7 +23,10 @@ sap.ui.define([
 			Task.syncHistory();
 			Task.tie(this);
 			this.handleSetUserTheme();
-			this.handleApplyToggleFilterTaskList()
+		},
+
+		onAfterRendering() {
+			this.handleApplyToggleFilterTasks(false)
 		},
 
 		handleToggleTimer() {
@@ -182,16 +185,21 @@ sap.ui.define([
 			this.byId("task-table").getBinding("items").filter(aTableFilters, "Application");
 		},
 
-		handleApplyToggleFilterTaskList() {
+		handleApplyToggleFilterTasks(toggle = true) {
 			const aTableFilters = []
+			const taskTable = this.byId("task-table");
+			const taskCalender = this.byId("task-calender")
+
 			const { showBreaks } = Config.getProperty('/settings/history');
 
 			if (showBreaks) {
 				const workFilter = new Filter({ path: 'status/isWorking', operator: FilterOperator.EQ, value1: showBreaks })
 				aTableFilters.push(workFilter);
 			}
-			this.byId("task-table").getBinding('items').filter(aTableFilters, "Application")
-			Config.setProperty('/settings/history/showBreaks', !showBreaks)
+
+			if(taskTable) taskTable.getBinding('items').filter(aTableFilters, "Application")
+			if(taskCalender) taskCalender.getBinding("appointments").filter(aTableFilters, "Application");
+			if(toggle) Config.setProperty('/settings/history/showBreaks', !showBreaks)
 		},
 
 		handleApplyDateSorter() {
