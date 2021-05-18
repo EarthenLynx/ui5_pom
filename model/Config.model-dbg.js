@@ -27,6 +27,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
     history: {
       session: true,
       persistent: false,
+      showBreaks: false,
       calenderStartHour: 6,
       calenderEndHour: 20
     },
