@@ -5,53 +5,28 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
     'sap.ui.demo.basicTemplate.model.TaskModel',
     {
       modelname: 'Task',
+      modelpath: 'http://192.168.2.159:9001/pomodoro-histories/',
 
       tie(handler) {
         handler.getOwnerComponent().setModel(this, this.modelname);
       },
 
-      addToHistory(task) {
+      async addToHistory(task) {
         if (Config.getProperty('/settings/history/session') === true) {
-          const historyItems = this.getProperty('/history');
-
-          const historyIndex = historyItems.findIndex((historyItem) => {
-            return (
-              historyItem.title == task.title &&
-              historyItem.status.isWorking === task.status.isWorking &&
-              historyItem.status.isPausing === task.status.isPausing
-            );
-          });
-          if (historyIndex >= 0) {
-            const endDate = new Date();
-            historyItems[historyIndex].msExpired += task.msExpired;
-            historyItems[historyIndex].endDate = endDate;
-          } else {
-            const endDate = new Date();
-            const startDate = new Date(endDate - task.msExpired);
-            task.endDate = endDate;
-            task.startDate = startDate;
-            historyItems.push(task);
-          }
-
-          this.setProperty('/history', historyItems);
-
-          if (Config.getProperty('/settings/history/persistent') === true) {
-            if (!localStorage.getItem('history')) {
-              localStorage.setItem('history', JSON.stringify([]));
-            }
-            localStorage.setItem('history', JSON.stringify(historyItems));
-          }
+          const response = await this._post('', task);
+          console.log(response)
         }
       },
 
-      updateTaskByTaskPath() {
-        const { sPath, ...historyItem } = this.getProperty('/taskEditByUser');
-        this.setProperty(sPath, historyItem);
+      async getTaskById(id) {
+        const response = await this._get(id);
+        return await response.json();
+      },
 
-        if (Config.getProperty('/settings/history/persistent') === true) {
-          const historyItems = this.getProperty('/history')
-          localStorage.setItem('history', JSON.stringify(historyItems))
-        }
+      async updateTaskById(id, task) {
+        console.log(task)
+        const response = await this._put(id, task);
+        console.log(response)
       },
 
       clearHistory(clearLocalStorage = false) {
@@ -61,20 +36,53 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
         }
       },
 
-      syncHistory() {
-        const historyItemsLocal = localStorage.getItem('history');
-        if (!!historyItemsLocal && historyItemsLocal !== '[]') {
-          this.setProperty('/history', JSON.parse(historyItemsLocal));
+      async getActiveTask(id) {
+        const activeTask = await this._get(id);
+        console.log(activeTask);
+        this.setProperty("/task", activeTask);
+      },
+
+      async getHistory() {
+        const history = await this._get();
+        console.log(history)
+        if (!!history) {
+          this.setProperty('/history', history);
           return true;
         } else {
           return false;
         }
       },
+
+      async _get(path = '') {
+        const url = this.modelpath + path;
+        const headers = { 'content-type': 'application/json' }
+        const options = { method: 'get', headers };
+        const response = await fetch(url, options);
+        return await response.json();
+      },
+
+      async _post(path = '', payload) {
+        const url = this.modelpath + path;
+        const headers = { 'content-type': 'application/json' }
+        const body = JSON.stringify(payload)
+        const options = { method: 'post', headers, body };
+        const response = await fetch(url, options);
+        return await response.json();
+      },
+
+      async _put(path, payload) {
+        const url = this.modelpath + path;
+        const headers = { 'content-type': 'application/json' }
+        const body = JSON.stringify(payload)
+        const options = { method: 'put', headers, body };
+        const response = await fetch(url, options);
+        return await response.json();
+      }
     }
   );
 
   return new Task({
-    task: { title: 'Nothing in particular', desc: '' },
+    task: {},
     taskEditByUser: {},
     taskEstimation: 0,
     history: [],

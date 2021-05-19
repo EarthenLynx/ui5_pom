@@ -2,27 +2,45 @@
 	xmlns:core="sap.ui.core">
 	<Dialog id="task-dialog" title="Focus on the next task at hand" class="sapUiContentPadding">
 		<beginButton>
-			<Button enabled="{Config>/settings/history/session}" text="Create task" tooltip="Add this task to your tasklist. Only possible if you have 'Record session' set to active in your settings" press="handleCreateNewTask" />
+			<Button icon="sap-icon://save"  enabled="{Config>/settings/history/session}" text="Create task" tooltip="Add this task to your tasklist. Only possible if you have 'Record session' set to active in your settings" press="handleCreateNewTask" />
 		</beginButton>
 		<endButton>
-			<Button type="Accept" text="Set active task" tooltip="Set this task as your current focus. If 'Record session' is active, your working time and breaks will automatically be added to the currently active task" press="handleCloseTaskDialog" />
+			<Button text="Close" tooltip="Set this task as your current focus. If 'Record session' is active, your working time and breaks will automatically be added to the currently active task" press="handleCloseTaskDialog" />
 		</endButton>
 		<content>
 
-			<VBox class="sapUiTinyMargin">
-				<Label text="What are you focusing on?"></Label>
-				<Input placeholder="What are you focusing on?" value="{Task>/task/title}" showSuggestion="true" suggestionItems="{Task>/history}">
-					<suggestionItems>
-						<core:ListItem text="{Task>title}" additionalText="{path: 'Task>status', formatter: '.formatter.formatStatusToString'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
-					</suggestionItems>
-				</Input>
 
-				<Label text="Time estimation (H)"></Label>
-				<StepInput value="{Task>/taskEstimation}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+			<Label text="What are you focusing on?"></Label>
+			<Input suggestionItemSelected="handleGetActiveTask" placeholder="What are you focusing on?" value="{Task>/task/title}" showSuggestion="true" suggestionItems="{Task>/history}">
+				<suggestionItems>
+					<core:ListItem text="{Task>title}" additionalText="{path: 'Task>status', formatter: '.formatter.formatStatusToString'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
+				</suggestionItems>
+			</Input>
 
-				<Label text="Add a comment"></Label>
-				<TextArea placeholder="Add a comment" value="{Task>/task/desc}" width="100%"/>
-			</VBox>
+			<HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+				<VBox class="sapUiSmallMarginEnd">
+					<Label text="Time estimated"></Label>
+					<StepInput placeholder="Time estimated" change="_setNewTaskMsEstimated" value="{path: 'Task>/task/msEstimated', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+				</VBox>
+				<VBox class="sapUiSmallMarginStart">
+					<Label text="Time spent"></Label>
+					<StepInput placeholder="Time spent" change="_setNewTaskMsExpired" value="{path: 'Task>/task/msExpired', formatter: '.formatter.formatMsToHours'}" displayValuePrecision="2" width="100%" min="0" step="0.25" largerStep="1" textAlign="Center"/>
+				</VBox>
+			</HBox>
+
+			<Label text="Edit comment"></Label>
+			<TextArea placeholder="Add a comment" value="{Task>/task/desc}" width="100%"/>
+
+			<HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+				<VBox width="100%" class="sapUiSmallMarginEnd">
+					<Label text="Edit start date"></Label>
+					<DateTimePicker width="100%" value="{Task>/task/startDate}" minutesStep="5" secondsStep="30" class="sapUiSmallMarginBottom"/>
+				</VBox>
+				<VBox width="100%" class="sapUiSmallMarginStart">
+					<Label text="Edit end date"></Label>
+					<DateTimePicker width="100%" value="{Task>/task/endDate}" minutesStep="5" secondsStep="30" class="sapUiSmallMarginBottom"/>
+				</VBox>
+			</HBox>
 
 			<!-- taskEstimation -->
 		</content>

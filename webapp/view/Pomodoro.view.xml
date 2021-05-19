@@ -10,15 +10,20 @@
           <Text textAlign="Center" text="Current task:"></Text>
           <Text class="sapUiSmallMarginTop sapUiSmallMarginBottom" textAlign="Center" text="{Task>/task/title}"></Text>
           <Text class="ui-title" text="{ path: 'Pomodoro>/timer/msLeft', formatter: '.formatter.formatMsToMinutes'}" />
+
         </VBox>
         <ProgressIndicator state="{= (${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100) >= 80 ? 'Success' : 'Information'}" width="20rem" class="sapUiSmallMarginBottom" percentValue="{= ${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100 }"/>
         <VBox alignItems="Center">
-          <Button type="Transparent" text="Choose a focus" icon="sap-icon://target-group" press="handleOpenTaskDialog" />
           <HBox>
             <Button type="{= (${Pomodoro>/timer/msExpired} / ${Pomodoro>/timer/msTotal} * 100) >= 80 ? 'Success' : 'Default'}" class="sapUiTinyMargin" tooltip="Finish active phase" icon="sap-icon://future" press="handleFinishCurrentPhase" />
             <Button class="sapUiTinyMargin" tooltip="Toggle timer" icon="{=${Pomodoro>/timer/ticking} ? 'sap-icon://pause' : 'sap-icon://media-play'}" press="handleToggleTimer" />
             <Button class="sapUiTinyMargin" tooltip="Reset this phase" icon="sap-icon://stop" press="handleResetCurrentPhase" />
           </HBox>
+          <Input suggestionItemSelected="handleGetActiveTask" placeholder="Choose a focus ..." value="{Task>/task/query}" showSuggestion="true" suggestionItems="{Task>/history}">
+            <suggestionItems>
+              <core:ListItem text="{Task>id} - {Task>title}" additionalText="{path: 'Task>status', formatter: '.formatter.formatStatusToString'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
+            </suggestionItems>
+          </Input>
         </VBox>
       </l:BlockLayoutCell>
     </l:BlockLayoutRow>

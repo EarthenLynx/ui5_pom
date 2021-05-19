@@ -2,7 +2,7 @@
   xmlns:core="sap.ui.core">
   <Dialog id="task-edit-dialog" title="Edit a task" class="sapUiContentPadding">
     <beginButton>
-      <Button icon="sap-icon://save" text="Save" press="handleUpdateTaskByTaskPath" />
+      <Button icon="sap-icon://save" text="Save" press="handleUpdateHistoryItem" />
     </beginButton>
     <endButton>
       <Button text="Close" press="handleCloseTaskEditDialog" />

@@ -20,7 +20,7 @@ sap.ui.define([
 			Pomodoro.init();
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
-			Task.syncHistory();
+			Task.getHistory();
 			Task.tie(this);
 			this.handleSetUserTheme();
 		},
@@ -48,7 +48,7 @@ sap.ui.define([
 		 * - Show a desktop notification
 		 */
 		handleFinishCurrentPhase() {
-			const { status, taskEstimation } = Pomodoro.getData();
+			const { status } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Config.getProperty('/settings/minFocus')
 			const { desktopNotification } = Config.getProperty('/settings/notification')
 			const { ticking, msExpired, counter } = Pomodoro.getProperty('/timer')
@@ -59,11 +59,9 @@ sap.ui.define([
 				Pomodoro.increaseCounter(1);
 				Pomodoro.setStatusNext();
 				if ((msExpired > msMinFocus) || !status.isWorking) {
-					const { task } = Task.getData();
-					task.status = status;
-					task.msExpired = msExpired;
-					task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
-					Task.addToHistory({ ...task })
+					const { id, ...task } = Task.getProperty('/task');
+					task.msExpired += msExpired;
+					Task.updateTaskById(id, task)
 					Toast.show('Phase completed')
 					if (desktopNotification) {
 						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
@@ -79,21 +77,30 @@ sap.ui.define([
 			Pomodoro.setStatusPrevious();
 		},
 
+		handleGetActiveTask(oEvent) {
+			const sText = oEvent.getParameters().selectedItem.mProperties.text;
+			const id = sText.split(' - ')[0];
+			Task.getActiveTask(id)
+		},
+
 		handleCreateNewTask() {
-			const { task, taskEstimation } = Task.getData();
+			const { task } = Task.getData();
 			task.status = {
 				isWorking: true,
 				isPausing: false
 			}
-			task.msExpired = 0;
-			task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
-			Task.addToHistory({ ...task });
+			task.startDate = new Date(task.startDate)
+			task.endDate = new Date(task.endDate)
+			Task.addToHistory(task);
 			Toast.show('Task added to tasklist.');
 			this.handleCloseTaskDialog();
 		},
 
-		handleUpdateTaskByTaskPath() {
-			Task.updateTaskByTaskPath();
+		handleUpdateHistoryItem() {
+			const {id, ...task} = Task.getProperty('/taskEditByUser');
+			task.startDate = new Date(task.startDate)
+			task.endDate = new Date(task.endDate)
+			Task.updateTaskById(id, task);
 			this.handleCloseTaskEditDialog()
 		},
 
@@ -163,7 +170,7 @@ sap.ui.define([
 		},
 
 		handleSynchronizeHistory() {
-			const wasSynced = Task.syncHistory()
+			const wasSynced = Task.getHistory()
 			if (wasSynced) {
 				Toast.show('Loaded session data from history')
 			} else {
@@ -208,6 +215,19 @@ sap.ui.define([
 			aSorters.push(new Sorter('startDate', true, this._groupByDay))
 
 			this.byId('task-table').getBinding('items').sort(aSorters)
+		},
+
+		_setNewTaskMsExpired(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Task.setProperty('/task/msExpired', msValue)
+		},
+
+		_setNewTaskMsEstimated(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Task.setProperty('/task/msEstimated', msValue)
+			console.log(Task.getProperty('/task/msEstimated', msValue))
 		},
 
 		_setActiveTaskMsExpired(oEvent) {

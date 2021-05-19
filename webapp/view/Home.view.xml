@@ -23,6 +23,7 @@
 		<footer>
 			<OverflowToolbar id="otbFooter">
 				<ToolbarSpacer/>
+				<Button type="Transparent" text="Create new task" icon="sap-icon://create" press="handleOpenTaskDialog" />
 			</OverflowToolbar>
 		</footer>
 	</Page>
