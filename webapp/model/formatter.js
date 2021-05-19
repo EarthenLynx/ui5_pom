@@ -20,16 +20,6 @@ sap.ui.define([], function () {
 			}
 		},
 
-		formatStatusToString(obj) {
-			if (obj) {
-				if (obj.isWorking === true) {
-					return "Work"
-				} else {
-					return "Break"
-				}
-			}
-		},
-
 		formatStringToDateTime(string) {
 			if(string) {
 				return new Date(string)

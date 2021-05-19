@@ -13,7 +13,6 @@
           <!-- TODO: Add a filter for only today's items here -->
           <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplyDateSorter" />
           <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
-          <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTasks" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
@@ -35,9 +34,6 @@
       <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time spent" />
       </Column>
-      <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Pomodoro Phase" />
-      </Column>
       <Column width="4rem" hAlign="Center">
         <!-- Empty column for edit button -->
       </Column>
@@ -49,7 +45,6 @@
           <Text text="{Task>desc}" />
           <Text text="{path: 'Task>msEstimated', formatter: '.formatter.formatMsToHours'} h" />
           <Text text="{path: 'Task>msExpired', formatter: '.formatter.formatMsToHours'} h" />
-          <Text text="{path: 'Task>status', formatter: '.formatter.formatStatusToString'}" />
           <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
         </cells>
       </ColumnListItem>

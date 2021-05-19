@@ -13,7 +13,7 @@
 			<Label text="What are you focusing on?"></Label>
 			<Input suggestionItemSelected="handleGetActiveTask" placeholder="What are you focusing on?" value="{Task>/task/title}" showSuggestion="true" suggestionItems="{Task>/history}">
 				<suggestionItems>
-					<core:ListItem text="{Task>title}" additionalText="{path: 'Task>status', formatter: '.formatter.formatStatusToString'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
+					<core:ListItem text="{Task>title}" additionalText="{path: 'Task>status'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
 				</suggestionItems>
 			</Input>
 

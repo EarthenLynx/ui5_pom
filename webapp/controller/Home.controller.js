@@ -25,9 +25,6 @@ sap.ui.define([
 			this.handleSetUserTheme();
 		},
 
-		onAfterRendering() {
-			this.handleApplyToggleFilterTasks(false)
-		},
 
 		handleToggleTimer() {
 			const { ticking } = Pomodoro.getProperty('/timer');
@@ -60,11 +57,13 @@ sap.ui.define([
 				Pomodoro.setStatusNext();
 				if ((msExpired > msMinFocus) || !status.isWorking) {
 					const { id, ...task } = Task.getProperty('/task');
-					task.msExpired += msExpired;
-					Task.updateTaskById(id, task)
-					Toast.show('Phase completed')
-					if (desktopNotification) {
-						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
+					if (status.isWorking) {
+						task.msExpired += msExpired;
+						Task.updateTaskById(id, task)
+						Toast.show('Phase completed')
+						if (desktopNotification) {
+							this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
+						}
 					}
 				} else {
 					Toast.show('Phase skipped')
@@ -85,19 +84,15 @@ sap.ui.define([
 
 		handleCreateNewTask() {
 			const { task } = Task.getData();
-			task.status = {
-				isWorking: true,
-				isPausing: false
-			}
-			task.startDate = new Date(task.startDate)
-			task.endDate = new Date(task.endDate)
+			task.startDate = new Date(task.startDate || new Date().getTime())
+			task.endDate = new Date(task.endDate || new Date().getTime())
 			Task.addToHistory(task);
 			Toast.show('Task added to tasklist.');
 			this.handleCloseTaskDialog();
 		},
 
 		handleUpdateHistoryItem() {
-			const {id, ...task} = Task.getProperty('/taskEditByUser');
+			const { id, ...task } = Task.getProperty('/taskEditByUser');
 			task.startDate = new Date(task.startDate)
 			task.endDate = new Date(task.endDate)
 			Task.updateTaskById(id, task);
@@ -190,23 +185,6 @@ sap.ui.define([
 			}
 
 			this.byId("task-table").getBinding("items").filter(aTableFilters, "Application");
-		},
-
-		handleApplyToggleFilterTasks(toggle = true) {
-			const aTableFilters = []
-			const taskTable = this.byId("task-table");
-			const taskCalender = this.byId("task-calender")
-
-			const { showBreaks } = Config.getProperty('/settings/history');
-
-			if (showBreaks) {
-				const workFilter = new Filter({ path: 'status/isWorking', operator: FilterOperator.EQ, value1: showBreaks })
-				aTableFilters.push(workFilter);
-			}
-
-			if(taskTable) taskTable.getBinding('items').filter(aTableFilters, "Application")
-			if(taskCalender) taskCalender.getBinding("appointments").filter(aTableFilters, "Application");
-			if(toggle) Config.setProperty('/settings/history/showBreaks', !showBreaks)
 		},
 
 		handleApplyDateSorter() {
