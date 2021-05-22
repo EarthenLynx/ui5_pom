@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m"
   xmlns:core="sap.ui.core">
-  <Dialog id="task-edit-dialog" title="Edit a task" class="sapUiContentPadding">
+  <Dialog id="task-edit-dialog" title="Edit task {Task>/taskEditByUser/id}" draggable="true" class="sapUiContentPadding">
     <beginButton>
       <Button icon="sap-icon://save" text="Save" press="handleUpdateHistoryItem" />
     </beginButton>
@@ -25,7 +25,6 @@
 
       <Label text="Edit comment"></Label>
       <TextArea placeholder="Add a comment" value="{Task>/taskEditByUser/desc}" width="100%"/>
-
 
       <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
         <VBox width="100%" class="sapUiSmallMarginEnd">

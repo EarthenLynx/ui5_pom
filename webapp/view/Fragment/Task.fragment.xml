@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<Dialog id="task-dialog" title="Focus on the next task at hand" class="sapUiContentPadding">
+	<Dialog id="task-dialog" title="Create a new task" draggable="true"  class="sapUiContentPadding">
 		<beginButton>
 			<Button icon="sap-icon://save"  enabled="{Config>/settings/history/session}" text="Create task" tooltip="Add this task to your tasklist. Only possible if you have 'Record session' set to active in your settings" press="handleCreateNewTask" />
 		</beginButton>
