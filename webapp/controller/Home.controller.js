@@ -89,6 +89,7 @@ sap.ui.define([
 			Task.addToHistory(task);
 			Toast.show('Task added to tasklist.');
 			this.handleCloseTaskDialog();
+			this.handleGetHistory()
 		},
 
 		handleUpdateHistoryItem() {
@@ -164,7 +165,7 @@ sap.ui.define([
 			}
 		},
 
-		handleSynchronizeHistory() {
+		handleGetHistory() {
 			const wasSynced = Task.getHistory()
 			if (wasSynced) {
 				Toast.show('Loaded session data from history')

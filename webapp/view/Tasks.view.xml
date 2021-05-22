@@ -3,7 +3,7 @@
   xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core">
-  <Table id="task-table" inset="false" items="{Task>/history}" alternateRowColors="true" backgroundDesign="solid">
+  <Table id="task-table" inset="false" items="{Task>/history}" alternateRowColors="true">
     <headerToolbar>
       <OverflowToolbar>
         <content>
@@ -12,7 +12,7 @@
           <ToolbarSpacer/>
           <!-- TODO: Add a filter for only today's items here -->
           <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplyDateSorter" />
-          <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
+          <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleGetHistory" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
