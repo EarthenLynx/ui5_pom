@@ -14,7 +14,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       async addToHistory(task) {
         if (Config.getProperty('/settings/history/session') === true) {
           const response = await this._post('', task);
-          console.log(response)
         }
       },
 
@@ -24,9 +23,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
       },
 
       async updateTaskById(id, task) {
-        console.log(task)
         const response = await this._put(id, task);
-        console.log(response)
       },
 
       clearHistory(clearLocalStorage = false) {
@@ -38,13 +35,11 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
 
       async getActiveTask(id) {
         const activeTask = await this._get(id);
-        console.log(activeTask);
         this.setProperty("/task", activeTask);
       },
 
       async getHistory() {
         const history = await this._get();
-        console.log(history)
         if (!!history) {
           this.setProperty('/history', history);
           return true;

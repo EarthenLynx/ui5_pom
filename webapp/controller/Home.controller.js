@@ -148,13 +148,11 @@ sap.ui.define([
 		handleOpenTaskEditDialog(oEvent) {
 			const oSource = oEvent.getSource();
 
-			// Conditionally find the selected path
-			let sPath;
-			if (oSource.getSelectedAppointments) {
-				sPath = oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath();
-			} else {
-				sPath = oSource.getBindingContext('Task').getPath();
-			}
+			// Conditionally find the selected path based on event source (tasklist, calender)
+			const sPath = oSource.getSelectedAppointments ?
+				oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath() :
+				oSource.getBindingContext('Task').getPath();
+
 			const oHistoryItem = Task.getProperty(sPath);
 			oHistoryItem.sPath = sPath;
 			Task.setProperty('/taskEditByUser', oHistoryItem);
@@ -225,7 +223,6 @@ sap.ui.define([
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/task/msEstimated', msValue)
-			console.log(Task.getProperty('/task/msEstimated', msValue))
 		},
 
 		// TaskUpdatefragment - Update msExpired whenever user changes value
