@@ -44,7 +44,7 @@ sap.ui.define([
 		 * - Add item to history, given user has configured
 		 * - Show a desktop notification
 		 */
-		handleFinishCurrentPhase() {
+		async handleFinishCurrentPhase() {
 			const { status } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Config.getProperty('/settings/minFocus')
 			const { desktopNotification } = Config.getProperty('/settings/notification')
@@ -52,22 +52,37 @@ sap.ui.define([
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
 			} else {
+
+				// Prepare for the next phase
 				Pomodoro.stopTicking();
 				Pomodoro.increaseCounter(1);
 				Pomodoro.setStatusNext();
-				if ((msExpired > msMinFocus) || !status.isWorking) {
-					const { id, ...task } = Task.getProperty('/task');
-					if (status.isWorking) {
+
+				// If phase ends automatically or is a break
+				const { id, ...task } = Task.getProperty('/task');
+				if (status.isWorking) {
+
+					// Update item only if task exists
+					if (!!id) {
 						task.msExpired += msExpired;
-						Task.updateTaskById(id, task)
-						Toast.show('Phase completed')
-						if (desktopNotification) {
-							this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
-						}
+						task.startDate = new Date(task.startDate)
+						task.endDate = new Date();
+						await Task.updateTaskById(id, task)
+						Task.getHistory();
 					}
-				} else {
-					Toast.show('Phase skipped')
+
+					// Notify user phase is completed
+					Toast.show('Phase completed')
+					if (desktopNotification) {
+						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
+					}
 				}
+
+				// Notify user break is completed
+				if (!status.isWorking) {
+					Toast.show('Pausing finished')
+				}
+
 			}
 		},
 
@@ -82,14 +97,18 @@ sap.ui.define([
 			Task.getActiveTask(id)
 		},
 
-		handleCreateNewTask() {
-			const { task } = Task.getData();
-			task.startDate = new Date(task.startDate || new Date().getTime())
-			task.endDate = new Date(task.endDate || new Date().getTime())
-			Task.addToHistory(task);
-			Toast.show('Task added to tasklist.');
-			this.handleCloseTaskDialog();
-			this.handleGetHistory()
+		async handleCreateNewTask() {
+			try {
+				const { task } = Task.getData();
+				task.startDate = new Date(task.startDate || new Date().getTime())
+				task.endDate = new Date(task.endDate || new Date().getTime())
+				await Task.addToHistory(task);
+				await Task.getHistory();
+				Toast.show('Task added to tasklist.');
+				this.handleCloseTaskDialog();
+			} catch (e) {
+				Toast.show(`Could not add task to tasklist: ${e}`);
+			}
 		},
 
 		handleUpdateHistoryItem() {
@@ -131,9 +150,7 @@ sap.ui.define([
 
 			// Conditionally find the selected path
 			let sPath;
-			console.log(oSource)
 			if (oSource.getSelectedAppointments) {
-				console.log(oSource.getSelectedAppointments())
 				sPath = oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath();
 			} else {
 				sPath = oSource.getBindingContext('Task').getPath();
@@ -165,8 +182,8 @@ sap.ui.define([
 			}
 		},
 
-		handleGetHistory() {
-			const wasSynced = Task.getHistory()
+		async handleGetHistory() {
+			const wasSynced = await Task.getHistory()
 			if (wasSynced) {
 				Toast.show('Loaded session data from history')
 			} else {
