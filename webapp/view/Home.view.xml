@@ -1,6 +1,7 @@
 <mvc:View controllerName="apps.pomodoro.controller.Home" displayBlock="true"
 	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core">
 	<Page id="page" title="Pomodoro Assistant">
 		<content>
 			<IconTabBar applyContentPadding="false" stretchContentHeight="true">
@@ -22,6 +23,11 @@
 		</content>
 		<footer>
 			<OverflowToolbar id="otbFooter">
+				<Input width="12rem" suggestionItemSelected="handleGetActiveTask" placeholder="Choose a focus ..." value="{Task>/task/query}" showSuggestion="true" suggestionItems="{Task>/history}">
+					<suggestionItems>
+						<core:ListItem text="{Task>id} - {Task>title}" additionalText="{path: 'Task>status'} - {path: 'Task>msExpired', formatter: '.formatter.formatMsToMinutes'} / {path: 'Task>msExpected', formatter: '.formatter.formatMsToMinutes'}"/>
+					</suggestionItems>
+				</Input>
 				<ToolbarSpacer/>
 				<Button type="Transparent" text="Create new task" icon="sap-icon://create" press="handleOpenTaskDialog" />
 			</OverflowToolbar>
