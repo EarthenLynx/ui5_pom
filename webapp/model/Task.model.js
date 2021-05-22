@@ -26,6 +26,10 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
         const response = await this._put(id, task);
       },
 
+      async deleteTaskById(id) {
+        const response = await this._delete(id);
+      },
+
       clearHistory(clearLocalStorage = false) {
         this.setProperty('/history', []);
         if (clearLocalStorage === true) {
@@ -70,6 +74,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
         const headers = { 'content-type': 'application/json' }
         const body = JSON.stringify(payload)
         const options = { method: 'put', headers, body };
+        const response = await fetch(url, options);
+        return await response.json();
+      },
+
+      async _delete(path) {
+        const url = this.modelpath + path;
+        const options = { method: 'delete' };
         const response = await fetch(url, options);
         return await response.json();
       }

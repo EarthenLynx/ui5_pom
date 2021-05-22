@@ -145,6 +145,18 @@ sap.ui.define([
 			}
 		},
 
+		async handleDeleteHistoryItem(oEvent) {
+			try {
+				const sPath = oEvent.getSource().getBindingContext('Task').getPath();
+				const nHistoryId = Task.getProperty(`${sPath}/id`);
+				await Task.deleteTaskById(nHistoryId);
+				await Task.getHistory()
+				Toast.show('Task deleted successfully')
+			} catch (e) {
+				Toast.show('Could not delete task')
+			}
+		},
+
 		handleOpenTaskEditDialog(oEvent) {
 			const oSource = oEvent.getSource();
 

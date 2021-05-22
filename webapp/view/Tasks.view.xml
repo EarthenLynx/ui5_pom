@@ -34,7 +34,10 @@
       <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time spent" />
       </Column>
-      <Column width="4rem" hAlign="Center">
+      <Column width="3rem">
+        <!-- Empty column for edit button -->
+      </Column>
+      <Column width="3rem">
         <!-- Empty column for edit button -->
       </Column>
     </columns>
@@ -45,7 +48,8 @@
           <Text text="{Task>desc}" />
           <Text text="{path: 'Task>msEstimated', formatter: '.formatter.formatMsToHours'} h" />
           <Text text="{path: 'Task>msExpired', formatter: '.formatter.formatMsToHours'} h" />
-          <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
+            <Button type="Transparent" icon="sap-icon://delete" tooltip="Delete this task" press="handleDeleteHistoryItem" />
+            <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
         </cells>
       </ColumnListItem>
     </items>
