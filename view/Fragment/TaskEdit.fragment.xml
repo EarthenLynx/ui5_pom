@@ -30,11 +30,11 @@
       <HBox class="sapUiSmallMarginTop sapUiSmallMarginBottom">
         <VBox width="100%" class="sapUiSmallMarginEnd">
           <Label text="Edit start date"></Label>
-          <DateTimePicker width="100%" value="{Task>/taskEditByUser/startDate}" class="sapUiSmallMarginBottom"/>
+          <DateTimePicker width="100%" value="{Task>/taskEditByUser/startDate}" minutesStep="5" secondsStep="30" class="sapUiSmallMarginBottom"/>
         </VBox>
         <VBox width="100%" class="sapUiSmallMarginStart">
           <Label text="Edit end date"></Label>
-          <DateTimePicker width="100%" value="{Task>/taskEditByUser/endDate}" class="sapUiSmallMarginBottom"/>
+          <DateTimePicker width="100%" value="{Task>/taskEditByUser/endDate}" minutesStep="5" secondsStep="30" class="sapUiSmallMarginBottom"/>
         </VBox>
       </HBox>
       <!-- taskEstimation -->
