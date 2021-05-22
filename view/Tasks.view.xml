@@ -1,9 +1,9 @@
-<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+<mvc:View controllerName="apps.pomodoro.controller.Home" displayBlock="true"
   xmlns="sap.m"
   xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core">
-  <Table id="task-table" inset="false" items="{Task>/history}" alternateRowColors="true" backgroundDesign="solid">
+  <Table id="task-table" inset="false" items="{Task>/history}" alternateRowColors="true">
     <headerToolbar>
       <OverflowToolbar>
         <content>
@@ -12,8 +12,7 @@
           <ToolbarSpacer/>
           <!-- TODO: Add a filter for only today's items here -->
           <Button icon="sap-icon://group-2" tooltip="Group tasks together by their date" press="handleApplyDateSorter" />
-          <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleSynchronizeHistory" />
-          <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTasks" />
+          <Button icon="sap-icon://synchronize" tooltip="This will try and find older session data, if you have the history option enabled" press="handleGetHistory" />
         </content>
       </OverflowToolbar>
     </headerToolbar>
@@ -35,10 +34,10 @@
       <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
         <Text text="Time spent" />
       </Column>
-      <Column width="10rem" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-        <Text text="Pomodoro Phase" />
+      <Column width="3rem">
+        <!-- Empty column for edit button -->
       </Column>
-      <Column width="4rem" hAlign="Center">
+      <Column width="3rem">
         <!-- Empty column for edit button -->
       </Column>
     </columns>
@@ -49,8 +48,8 @@
           <Text text="{Task>desc}" />
           <Text text="{path: 'Task>msEstimated', formatter: '.formatter.formatMsToHours'} h" />
           <Text text="{path: 'Task>msExpired', formatter: '.formatter.formatMsToHours'} h" />
-          <Text text="{path: 'Task>status', formatter: '.formatter.formatStatusToString'}" />
-          <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
+            <Button type="Transparent" icon="sap-icon://delete" tooltip="Delete this task" press="handleDeleteHistoryItem" />
+            <Button type="Transparent" icon="sap-icon://edit" tooltip="Edit this task" press="handleOpenTaskEditDialog" />
         </cells>
       </ColumnListItem>
     </items>

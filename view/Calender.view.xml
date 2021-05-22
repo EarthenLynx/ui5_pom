@@ -1,13 +1,10 @@
-<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" displayBlock="true"
+<mvc:View controllerName="apps.pomodoro.controller.Home" displayBlock="true"
   xmlns="sap.m"
   xmlns:l="sap.ui.layout"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:unified="sap.ui.unified"
   xmlns:core="sap.ui.core">
   <SinglePlanningCalendar id="task-calender" appointmentSelect="handleOpenTaskEditDialog" fullDay="false" startHour="{path: 'Config>/settings/history/calenderStartHour', formatter: '.formatter.formatStringToNumber'}" endHour="{path: 'Config>/settings/history/calenderEndHour', formatter: '.formatter.formatStringToNumber'}" title= "Pomodoro Calender" appointments="{path: 'Task>/history/'}">
-    <actions>
-      <Button icon="sap-icon://general-leave-request" tooltip="Toggle between showing breaks" type="{=${Config>/settings/history/showBreaks} ? 'Ghost' : 'Default'}" press="handleApplyToggleFilterTasks" />
-    </actions>
     <views>
       <SinglePlanningCalendarDayView key="DayView" title="Daily overview" />
       <!-- <SinglePlanningCalendarWorkWeekView key="WorkWeekView" title="Work Week" /> -->
@@ -15,7 +12,7 @@
       <!-- <SinglePlanningCalendarMonthView key="MonthView" title="Month" /> -->
     </views>
     <appointments>
-      <unified:CalendarAppointment title= "{Task>title}" text= "{Task>desc}" color="{=${Task>status/isWorking} ? '#1866b4' : '#2a6d3c'}" startDate= "{path: 'Task>startDate', formatter: '.formatter.formatStringToDateTime'}" endDate= "{path: 'Task>endDate', formatter: '.formatter.formatStringToDateTime'}">
+      <unified:CalendarAppointment title= "{Task>title}" text= "{Task>desc}" color="#1866b4" startDate= "{path: 'Task>startDate', formatter: '.formatter.formatStringToDateTime'}" endDate= "{path: 'Task>endDate', formatter: '.formatter.formatStringToDateTime'}">
       </unified:CalendarAppointment>
     </appointments>
   </SinglePlanningCalendar>

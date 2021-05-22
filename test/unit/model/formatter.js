@@ -1,1 +1,0 @@
-sap.ui.define(["sap/ui/demo/basicTemplate/model/formatter"],function(){"use strict";QUnit.module("Formatters");QUnit.test("I should test my formatters",function(t){t.ok(true)})});

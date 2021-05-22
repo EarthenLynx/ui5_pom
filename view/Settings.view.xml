@@ -1,4 +1,4 @@
-<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Settings" displayBlock="true"
+<mvc:View controllerName="apps.pomodoro.controller.Settings" displayBlock="true"
   xmlns="sap.m"
   xmlns:l="sap.ui.layout"
   xmlns:f="sap.ui.layout.form"

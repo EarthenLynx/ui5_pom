@@ -12,7 +12,7 @@ sap.ui.define([
 ], function (Controller, Fragment, Toast, Sorter, Filter, FilterOperator, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
-	return Controller.extend('sap.ui.demo.basicTemplate.controller.Home', {
+	return Controller.extend('apps.pomodoro.controller.Home', {
 
 		formatter: formatter,
 
@@ -20,14 +20,11 @@ sap.ui.define([
 			Pomodoro.init();
 			Pomodoro.tie(this);
 			Pomodoro.setProperty('/settings/notification/desktopNotification', await this.requestNotificationPermission());
-			Task.syncHistory();
+			Task.getHistory();
 			Task.tie(this);
 			this.handleSetUserTheme();
 		},
 
-		onAfterRendering() {
-			this.handleApplyToggleFilterTasks(false)
-		},
 
 		handleToggleTimer() {
 			const { ticking } = Pomodoro.getProperty('/timer');
@@ -47,30 +44,45 @@ sap.ui.define([
 		 * - Add item to history, given user has configured
 		 * - Show a desktop notification
 		 */
-		handleFinishCurrentPhase() {
-			const { status, taskEstimation } = Pomodoro.getData();
+		async handleFinishCurrentPhase() {
+			const { status } = Pomodoro.getData();
 			const { msTotal: msMinFocus } = Config.getProperty('/settings/minFocus')
 			const { desktopNotification } = Config.getProperty('/settings/notification')
 			const { ticking, msExpired, counter } = Pomodoro.getProperty('/timer')
 			if (ticking && status.isWorking && (msExpired < msMinFocus)) {
 				Toast.show(`Focus for at least ${(msMinFocus / 60000).toFixed(0)} minutes!`);
 			} else {
+
+				// Prepare for the next phase
 				Pomodoro.stopTicking();
 				Pomodoro.increaseCounter(1);
 				Pomodoro.setStatusNext();
-				if ((msExpired > msMinFocus) || !status.isWorking) {
-					const { task } = Task.getData();
-					task.status = status;
-					task.msExpired = msExpired;
-					task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
-					Task.addToHistory({ ...task })
+
+				// If phase ends automatically or is a break
+				const { id, ...task } = Task.getProperty('/task');
+				if (status.isWorking) {
+
+					// Update item only if task exists
+					if (!!id) {
+						task.msExpired += msExpired;
+						task.startDate = new Date(task.startDate)
+						task.endDate = new Date();
+						await Task.updateTaskById(id, task)
+						Task.getHistory();
+					}
+
+					// Notify user phase is completed
 					Toast.show('Phase completed')
 					if (desktopNotification) {
 						this.sendNotification('Phase completed', { body: `${(msExpired / 60000).toFixed(0)} minute/s passed. Click here and jump into the next phase` })
 					}
-				} else {
-					Toast.show('Phase skipped')
 				}
+
+				// Notify user break is completed
+				if (!status.isWorking) {
+					Toast.show('Pausing finished')
+				}
+
 			}
 		},
 
@@ -79,21 +91,31 @@ sap.ui.define([
 			Pomodoro.setStatusPrevious();
 		},
 
-		handleCreateNewTask() {
-			const { task, taskEstimation } = Task.getData();
-			task.status = {
-				isWorking: true,
-				isPausing: false
-			}
-			task.msExpired = 0;
-			task.msEstimated = (taskEstimation * 3600000); /* Estimation user input is in Hours */
-			Task.addToHistory({ ...task });
-			Toast.show('Task added to tasklist.');
-			this.handleCloseTaskDialog();
+		handleGetActiveTask(oEvent) {
+			const sText = oEvent.getParameters().selectedItem.mProperties.text;
+			const id = sText.split(' - ')[0];
+			Task.getActiveTask(id)
 		},
 
-		handleUpdateTaskByTaskPath() {
-			Task.updateTaskByTaskPath();
+		async handleCreateNewTask() {
+			try {
+				const { task } = Task.getData();
+				task.startDate = new Date(task.startDate || new Date().getTime())
+				task.endDate = new Date(task.endDate || new Date().getTime())
+				await Task.addToHistory(task);
+				await Task.getHistory();
+				Toast.show('Task added to tasklist.');
+				this.handleCloseTaskDialog();
+			} catch (e) {
+				Toast.show(`Could not add task to tasklist: ${e}`);
+			}
+		},
+
+		handleUpdateHistoryItem() {
+			const { id, ...task } = Task.getProperty('/taskEditByUser');
+			task.startDate = new Date(task.startDate)
+			task.endDate = new Date(task.endDate)
+			Task.updateTaskById(id, task);
 			this.handleCloseTaskEditDialog()
 		},
 
@@ -104,7 +126,7 @@ sap.ui.define([
 				// load asynchronous XML fragment
 				Fragment.load({
 					id: oView.getId(),
-					name: 'sap.ui.demo.basicTemplate.view.Fragment.Task',
+					name: 'apps.pomodoro.view.Fragment.Task',
 					controller: this
 				}).then((oDialog) => {
 					// connect dialog to the root view of this component (models, lifecycle)
@@ -123,18 +145,26 @@ sap.ui.define([
 			}
 		},
 
+		async handleDeleteHistoryItem(oEvent) {
+			try {
+				const sPath = oEvent.getSource().getBindingContext('Task').getPath();
+				const nHistoryId = Task.getProperty(`${sPath}/id`);
+				await Task.deleteTaskById(nHistoryId);
+				await Task.getHistory()
+				Toast.show('Task deleted successfully')
+			} catch (e) {
+				Toast.show('Could not delete task')
+			}
+		},
+
 		handleOpenTaskEditDialog(oEvent) {
 			const oSource = oEvent.getSource();
 
-			// Conditionally find the selected path
-			let sPath;
-			console.log(oSource)
-			if (oSource.getSelectedAppointments) {
-				console.log(oSource.getSelectedAppointments())
-				sPath = oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath();
-			} else {
-				sPath = oSource.getBindingContext('Task').getPath();
-			}
+			// Conditionally find the selected path based on event source (tasklist, calender)
+			const sPath = oSource.getSelectedAppointments ?
+				oSource.getSelectedAppointments()[0].getBindingContext('Task').getPath() :
+				oSource.getBindingContext('Task').getPath();
+
 			const oHistoryItem = Task.getProperty(sPath);
 			oHistoryItem.sPath = sPath;
 			Task.setProperty('/taskEditByUser', oHistoryItem);
@@ -144,7 +174,7 @@ sap.ui.define([
 			if (!this.byId('task-edit-dialog')) {
 				this._taskEditDialog = Fragment.load({
 					id: oView.getId(),
-					name: 'sap.ui.demo.basicTemplate.view.Fragment.TaskEdit',
+					name: 'apps.pomodoro.view.Fragment.TaskEdit',
 					controller: this
 				}).then((oDialog) => {
 					oView.addDependent(oDialog);
@@ -162,8 +192,8 @@ sap.ui.define([
 			}
 		},
 
-		handleSynchronizeHistory() {
-			const wasSynced = Task.syncHistory()
+		async handleGetHistory() {
+			const wasSynced = await Task.getHistory()
 			if (wasSynced) {
 				Toast.show('Loaded session data from history')
 			} else {
@@ -172,6 +202,7 @@ sap.ui.define([
 		},
 
 		/* Sorting & Filter functions */
+		// Tasklist - Search for tasks
 		handleApplySearchTaskList(oEvent) {
 			const aTableFilters = []
 			const sQuery = oEvent.getParameter("query");
@@ -185,42 +216,42 @@ sap.ui.define([
 			this.byId("task-table").getBinding("items").filter(aTableFilters, "Application");
 		},
 
-		handleApplyToggleFilterTasks(toggle = true) {
-			const aTableFilters = []
-			const taskTable = this.byId("task-table");
-			const taskCalender = this.byId("task-calender")
-
-			const { showBreaks } = Config.getProperty('/settings/history');
-
-			if (showBreaks) {
-				const workFilter = new Filter({ path: 'status/isWorking', operator: FilterOperator.EQ, value1: showBreaks })
-				aTableFilters.push(workFilter);
-			}
-
-			if(taskTable) taskTable.getBinding('items').filter(aTableFilters, "Application")
-			if(taskCalender) taskCalender.getBinding("appointments").filter(aTableFilters, "Application");
-			if(toggle) Config.setProperty('/settings/history/showBreaks', !showBreaks)
-		},
-
+		// Tasklist - Group items by their date
 		handleApplyDateSorter() {
 			const aSorters = [];
-
 			aSorters.push(new Sorter('startDate', true, this._groupByDay))
-
 			this.byId('task-table').getBinding('items').sort(aSorters)
 		},
 
+		// Taskfragment - Update msExpired whenever user changes value
+		_setNewTaskMsExpired(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Task.setProperty('/task/msExpired', msValue)
+		},
+
+		// Taskfragment - Update msEstimated whenever user changes value
+		_setNewTaskMsEstimated(oEvent) {
+			const hValue = oEvent.getSource().getValue();
+			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			Task.setProperty('/task/msEstimated', msValue)
+		},
+
+		// TaskUpdatefragment - Update msExpired whenever user changes value
 		_setActiveTaskMsExpired(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msExpired', msValue)
 		},
 
+		// TaskUpdatefragment - Update msEstimated whenever user changes value
 		_setActiveTaskMsEstimated(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msEstimated', msValue)
 		},
+
+		// Util function for handleApplyDateSorter
 		_groupByDay(oContext) {
 			const sDate = oContext.getProperty("startDate");
 
