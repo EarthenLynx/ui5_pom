@@ -12,7 +12,7 @@ sap.ui.define(
   function (Controller, Toast, Text, Dialog, Button, MessageStrip, Pomodoro, Task) {
     "use strict";
 
-    return Controller.extend("sap.ui.demo.basicTemplate.controller.Basecontroller", {
+    return Controller.extend("apps.pomodoro.controller.Basecontroller", {
 
       async requestNotificationPermission() {
         const isGranted = Notification.permission;

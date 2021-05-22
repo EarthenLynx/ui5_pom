@@ -12,7 +12,7 @@ sap.ui.define([
 ], function (Controller, Fragment, Toast, Sorter, Filter, FilterOperator, Pomodoro, Task, Config, formatter) {
 	'use strict';
 
-	return Controller.extend('sap.ui.demo.basicTemplate.controller.Home', {
+	return Controller.extend('apps.pomodoro.controller.Home', {
 
 		formatter: formatter,
 
@@ -106,7 +106,7 @@ sap.ui.define([
 				// load asynchronous XML fragment
 				Fragment.load({
 					id: oView.getId(),
-					name: 'sap.ui.demo.basicTemplate.view.Fragment.Task',
+					name: 'apps.pomodoro.view.Fragment.Task',
 					controller: this
 				}).then((oDialog) => {
 					// connect dialog to the root view of this component (models, lifecycle)
@@ -146,7 +146,7 @@ sap.ui.define([
 			if (!this.byId('task-edit-dialog')) {
 				this._taskEditDialog = Fragment.load({
 					id: oView.getId(),
-					name: 'sap.ui.demo.basicTemplate.view.Fragment.TaskEdit',
+					name: 'apps.pomodoro.view.Fragment.TaskEdit',
 					controller: this
 				}).then((oDialog) => {
 					oView.addDependent(oDialog);
@@ -174,6 +174,7 @@ sap.ui.define([
 		},
 
 		/* Sorting & Filter functions */
+		// Tasklist - Search for tasks
 		handleApplySearchTaskList(oEvent) {
 			const aTableFilters = []
 			const sQuery = oEvent.getParameter("query");
@@ -187,20 +188,21 @@ sap.ui.define([
 			this.byId("task-table").getBinding("items").filter(aTableFilters, "Application");
 		},
 
+		// Tasklist - Group items by their date
 		handleApplyDateSorter() {
 			const aSorters = [];
-
 			aSorters.push(new Sorter('startDate', true, this._groupByDay))
-
 			this.byId('task-table').getBinding('items').sort(aSorters)
 		},
 
+		// Taskfragment - Update msExpired whenever user changes value
 		_setNewTaskMsExpired(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/task/msExpired', msValue)
 		},
 
+		// Taskfragment - Update msEstimated whenever user changes value
 		_setNewTaskMsEstimated(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
@@ -208,17 +210,21 @@ sap.ui.define([
 			console.log(Task.getProperty('/task/msEstimated', msValue))
 		},
 
+		// TaskUpdatefragment - Update msExpired whenever user changes value
 		_setActiveTaskMsExpired(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msExpired', msValue)
 		},
 
+		// TaskUpdatefragment - Update msEstimated whenever user changes value
 		_setActiveTaskMsEstimated(oEvent) {
 			const hValue = oEvent.getSource().getValue();
 			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msEstimated', msValue)
 		},
+
+		// Util function for handleApplyDateSorter
 		_groupByDay(oContext) {
 			const sDate = oContext.getProperty("startDate");
 

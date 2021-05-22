@@ -2,7 +2,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model'], function (JSONM
   'use strict';
 
   const Task = JSONModel.extend(
-    'sap.ui.demo.basicTemplate.model.TaskModel',
+    'apps.pomodoro.model.TaskModel',
     {
       modelname: 'Task',
       modelpath: 'http://192.168.2.159:9001/pomodoro-histories/',

@@ -2,7 +2,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', './Config.model', './Task.model'],
   'use strict';
 
   const Pomodoro = JSONModel.extend(
-    'sap.ui.demo.basicTemplate.model.PomodoroModel',
+    'apps.pomodoro.model.PomodoroModel',
     {
       modelname: 'Pomodoro',
 

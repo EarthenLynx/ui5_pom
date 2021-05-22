@@ -9,7 +9,7 @@ sap.ui.define(
   function (Controller, Fragment, Toast, Config,  formatter) {
     "use strict";
 
-    return Controller.extend("sap.ui.demo.basicTemplate.controller.Settings", {
+    return Controller.extend("apps.pomodoro.controller.Settings", {
 
       formatter: formatter,
 
@@ -53,7 +53,7 @@ sap.ui.define(
           // load asynchronous XML fragment
           Fragment.load({
             id: oView.getId(),
-            name: 'sap.ui.demo.basicTemplate.view.Fragment.History',
+            name: 'apps.pomodoro.view.Fragment.History',
             controller: this
           }).then((oDialog) => {
             // connect dialog to the root view of this component (models, lifecycle)

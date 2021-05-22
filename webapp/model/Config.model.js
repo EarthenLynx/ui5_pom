@@ -34,7 +34,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel'], function (JSONModel) {
   };
 
   const Config = JSONModel.extend(
-    'sap.ui.demo.basicTemplate.model.SettingsModel',
+    'apps.pomodoro.model.SettingsModel',
     {
       modelname: 'Config',
 
