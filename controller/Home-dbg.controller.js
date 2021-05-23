@@ -42,6 +42,7 @@ sap.ui.define([
 		 * - Check whether user has focused for the min. amount of time
 		 * - Stop time and set timer to next phase
 		 * - Add item to history, given user has configured
+		 * - Update local state
 		 * - Show a desktop notification
 		 */
 		async handleFinishCurrentPhase() {
@@ -71,7 +72,7 @@ sap.ui.define([
 
 						// After update, fetch updated data
 						await Task.getHistory();
-						const activeTask = Task.getActiveTask(id)
+						const activeTask = await Task.getActiveTask(id)
 						Task.setProperty('/task', activeTask)
 					}
 
