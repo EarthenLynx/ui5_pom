@@ -68,7 +68,11 @@ sap.ui.define([
 						task.startDate = new Date(task.startDate)
 						task.endDate = new Date();
 						await Task.updateTaskById(id, task)
-						Task.getHistory();
+
+						// After update, fetch updated data
+						await Task.getHistory();
+						const activeTask = Task.getActiveTask(id)
+						Task.setProperty('/task', activeTask)
 					}
 
 					// Notify user phase is completed
