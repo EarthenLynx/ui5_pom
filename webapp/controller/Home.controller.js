@@ -70,10 +70,10 @@ sap.ui.define([
 						task.endDate = new Date();
 						await Task.updateTaskById(id, task)
 
-						// After update, fetch updated data
-						await Task.getHistory();
+						// After update, fetch updated state
 						const activeTask = await Task.getActiveTask(id)
 						Task.setProperty('/task', activeTask)
+						Task.getHistory();
 					}
 
 					// Notify user phase is completed
@@ -198,8 +198,8 @@ sap.ui.define([
 		},
 
 		async handleGetHistory() {
-			const wasSynced = await Task.getHistory()
-			if (wasSynced) {
+			const bWasSynced = await Task.getHistory()
+			if (bWasSynced) {
 				Toast.show('Loaded session data from history')
 			} else {
 				Toast.show('No history data found')
@@ -230,29 +230,29 @@ sap.ui.define([
 
 		// Taskfragment - Update msExpired whenever user changes value
 		_setNewTaskMsExpired(oEvent) {
-			const hValue = oEvent.getSource().getValue();
-			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			const nMsValue = oEvent.getSource().getValue();
+			const msValue = nMsValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/task/msExpired', msValue)
 		},
 
 		// Taskfragment - Update msEstimated whenever user changes value
 		_setNewTaskMsEstimated(oEvent) {
-			const hValue = oEvent.getSource().getValue();
-			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			const nMsValue = oEvent.getSource().getValue();
+			const msValue = nMsValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/task/msEstimated', msValue)
 		},
 
 		// TaskUpdatefragment - Update msExpired whenever user changes value
 		_setActiveTaskMsExpired(oEvent) {
-			const hValue = oEvent.getSource().getValue();
-			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			const nMsValue = oEvent.getSource().getValue();
+			const msValue = nMsValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msExpired', msValue)
 		},
 
 		// TaskUpdatefragment - Update msEstimated whenever user changes value
 		_setActiveTaskMsEstimated(oEvent) {
-			const hValue = oEvent.getSource().getValue();
-			const msValue = hValue * (1000 * 60 * 60).toFixed(0);
+			const nMsValue = oEvent.getSource().getValue();
+			const msValue = nMsValue * (1000 * 60 * 60).toFixed(0);
 			Task.setProperty('/taskEditByUser/msEstimated', msValue)
 		},
 
